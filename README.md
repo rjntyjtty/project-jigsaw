@@ -4,9 +4,9 @@
 ### Project name: Jigsaw
 
 ### Team members:
-David (Sheng Wei) Cui - 1004267553 - cuisheng
-Nicholas Wong - 1004207388 - wongni21
-Carrie (Chuyun) Zhong - 1004396904 - zhongc13
+- David (Sheng Wei) Cui - 1004267553 - cuisheng
+- Nicholas Wong - 1004207388 - wongni21
+- Carrie (Chuyun) Zhong - 1004396904 - zhongc13
 
 ### Description of Web Application
 
