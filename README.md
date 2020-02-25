@@ -32,6 +32,7 @@ Project Jigsaw will be a content management platform where creators will upload 
 - Node express backend
 - Nedb for now, may change later
 - Image, video, etc encoding libraries
+- https://material-ui.com/
 
 ### Top 5 technical challenges
 - Targeting comments to parts of content
