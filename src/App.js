@@ -6,7 +6,7 @@ import {
   Link
 } from "react-router-dom";
 import { createStore } from './store'
-import Root from './routes/';
+import Root from './routes/index.js';
 
 class App extends React.Component {
 
@@ -15,7 +15,7 @@ class App extends React.Component {
           <Router>
             <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
             <Switch>
-              <Route path="/" />
+              <Route path="/" component={Root} />
             </Switch>
           </Router>
         );

@@ -2,8 +2,8 @@ import React from 'react';
 import {withStore} from '../store';
 import { Switch, Route } from 'react-router-dom';
 //import Main from './main/';
-//import Signup from './signup'
-//import Login from "./login";
+import Signup from './Signup/Signup'
+import Login from "./Login/Login";
 
 class Root extends React.Component {
 
@@ -16,7 +16,7 @@ class Root extends React.Component {
             routes: null
         };
     }
-/*
+
     componentDidMount() {
         // Determine routes based on whether the user is logged in or not
         let isLoggedIn = this.props.store.get("isLoggedIn");
@@ -46,10 +46,10 @@ class Root extends React.Component {
         return this.state.routes;
     }
 
-}*/
-/*
+}
+
 const loggedInRoutes = (props) => {
-    return (
+    return (/*
       <Switch>
         <Route path="/main">
           <Main store={props.store} />
@@ -57,7 +57,8 @@ const loggedInRoutes = (props) => {
         <Route path="*">
             INVALID ROUTE
         </Route>
-      </Switch>
+      </Switch>*/
+      <div>Hello</div>
     );
 }
 
@@ -69,6 +70,5 @@ const nonLoggedInRoutes = () => {
       </Switch>
     );
 }
-*/
-}
+
 export default withStore(Root);
