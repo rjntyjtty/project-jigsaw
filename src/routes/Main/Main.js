@@ -3,7 +3,7 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import Dashboard from '../../components/DashboardPage/Dashboard';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import Navbar from '../../components/NavBar/';
+//import Navbar from '../../components/NavBar/';
 //import LoginManager from '../../components/core/LoginManager/';
 //import JoinFandom from './JoinFandom/';
 //import ViewProfilePage from './ViewProfilePage/';
