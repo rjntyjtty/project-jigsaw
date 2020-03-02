@@ -9,6 +9,8 @@ import { withStore } from '../../store'
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import CircularProgress from '@material-ui/core/CircularProgress';
+
+import SignInSide from './SignInSide';
 //import redirectManager from '../../redirectManager';
 //import userRequests from '../../requests/userRequests';
 
@@ -40,6 +42,10 @@ class LoginPage extends React.Component {
     }
     render() {
         return (
+            <SignInSide />
+        )
+        /*
+        return (
             <Container className="login-page" maxWidth="sm">
                 <Card className="login-card">
                     <img
@@ -68,7 +74,7 @@ class LoginPage extends React.Component {
                     </Box>
                 </Card>
             </Container>
-        )
+        )*/
     }
 
     handleEmailChange(newEmail) {
