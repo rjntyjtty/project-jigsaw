@@ -1,7 +1,7 @@
 import React from 'react';
 import {withStore} from '../store';
 import { Switch, Route } from 'react-router-dom';
-//import Main from './main/';
+import Main from './Main';
 import Signup from './Signup/Signup'
 import Login from "./Login/Login";
 
@@ -49,7 +49,7 @@ class Root extends React.Component {
 }
 
 const loggedInRoutes = (props) => {
-    return (/*
+    return (
       <Switch>
         <Route path="/main">
           <Main store={props.store} />
@@ -57,8 +57,7 @@ const loggedInRoutes = (props) => {
         <Route path="*">
             INVALID ROUTE
         </Route>
-      </Switch>*/
-      <div>Hello</div>
+      </Switch>
     );
 }
 
