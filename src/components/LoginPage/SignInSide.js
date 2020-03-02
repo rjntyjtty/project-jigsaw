@@ -13,7 +13,6 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
-// https://medium.com/lessons-from-ordinary/lesson-from-a-jigsaw-puzzle-d5f9a8136805
 const useStyles = makeStyles(theme => ({
   root: {
     height: '100vh',
@@ -44,6 +43,16 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
+
+function Credits() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      <Link color="inherit" href="/credits">
+      Credits
+      </Link>
+    </Typography>
+  );
+}
 
 export default function SignInSide() {
   const classes = useStyles();
@@ -103,6 +112,9 @@ export default function SignInSide() {
                 </Link>
               </Grid>
             </Grid>
+            <Box mt={5}>
+              <Credits />
+            </Box>
           </form>
         </div>
       </Grid>

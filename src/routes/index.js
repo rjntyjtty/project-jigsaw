@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import Main from './Main/Main';
 import Signup from './Signup/Signup'
 import Login from "./Login/Login";
+import Credits from "./Credits/Credits"
 
 class Root extends React.Component {
 
@@ -37,8 +38,10 @@ class Root extends React.Component {
             this.props.history.push(nextRoute + (this.props.history.location.search ? this.props.history.location.search : ""));
         } else if (this.props.history.location.pathname === "/signup") {
             this.props.history.push('/signup');
-        } else {
+        } else if (this.props.history.location.pathname === "/login") {
             this.props.history.push('/login');
+        } else {
+            this.props.history.push('/credits');
         }
     }
 
@@ -57,6 +60,7 @@ const loggedInRoutes = (props) => {
         <Route path="*">
             INVALID ROUTE
         </Route>
+        <Route path="/credits" component={Credits} />
       </Switch>
     );
 }
@@ -66,6 +70,7 @@ const nonLoggedInRoutes = () => {
       <Switch>
         <Route path="/signup" component={Signup} />
         <Route path="/login" component={Login} />
+        <Route path="/credits" component={Credits} />
       </Switch>
     );
 }
