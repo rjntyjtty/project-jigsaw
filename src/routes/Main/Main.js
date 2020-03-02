@@ -39,13 +39,9 @@ class Main extends React.Component {
 
     render() {
         return (
-          <Box className="cldi-home-page">
-            <Switch>
-              <Route path="/"/>
-              <Route path="*"><Typography align="center">INVALID PATH</Typography></Route>
-            </Switch>
-            <Navbar callback={this.routeTo.bind(this)} />
-          </Box>
+          <div>
+            This is Home Page
+          </div>
         )
         /*
           return (

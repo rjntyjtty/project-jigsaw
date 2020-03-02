@@ -1,7 +1,7 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
-//import CardMedia from '@material-ui/core/CardMedia';
+import CardMedia from '@material-ui/core/CardMedia';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -11,8 +11,8 @@ import Link from '@material-ui/core/Link';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import SignInSide from './SignInSide';
-//import redirectManager from '../../redirectManager';
-//import userRequests from '../../requests/userRequests';
+import redirectManager from '../../redirectManager';
+import userRequests from '../../requests/userRequests';
 
 require('./LoginPage.css')
 
@@ -41,6 +41,7 @@ class LoginPage extends React.Component {
         this.checkLoginSuccess()
     }
     render() {
+        
         return (
             <SignInSide />
         )
@@ -74,7 +75,8 @@ class LoginPage extends React.Component {
                     </Box>
                 </Card>
             </Container>
-        )*/
+        )
+        */
     }
 
     handleEmailChange(newEmail) {
@@ -134,8 +136,10 @@ class LoginPage extends React.Component {
         )
     }
     handleLoginAttempt() {
-        console.log("Login Attempt");
         /*
+        console.log("Login Attempt");
+        */
+        
         this.validateLoginInput()
             .then(
                 () => {
@@ -165,12 +169,12 @@ class LoginPage extends React.Component {
                     }
                 }
             )
-            */
+            
     }
     checkLoginSuccess() {
         if (this.state.loginSuccess) {
-            //redirectManager.handleRedirect()
-            console.log("Login Success");
+            redirectManager.handleRedirect()
+            //console.log("Login Success");
         }
     }
 

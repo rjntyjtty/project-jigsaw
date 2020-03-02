@@ -1,15 +1,11 @@
 import React from 'react';
 //import Registration from '../../components/Registration/Registration.jsx'
+import SignUpPage from '../../components/SignUpPage/SignUpPage';
 
 class Signup extends React.Component{
 
     render(){
-      return(
-        <div>
-          <h1>Signup stuffs here</h1>
-        </div>
-      )
-        //return <Registration />
+        return <SignUpPage />
     }
 }
 export default Signup;
