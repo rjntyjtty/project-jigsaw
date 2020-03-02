@@ -17,7 +17,7 @@ class Root extends React.Component {
             routes: null
         };
     }
-
+/*
     componentDidMount() {
         // Determine routes based on whether the user is logged in or not
         let isLoggedIn = this.props.store.get("isLoggedIn");
@@ -44,9 +44,9 @@ class Root extends React.Component {
             this.props.history.push('/credits');
         }
     }
-
+*/
     render() {
-        return this.state.routes;
+        return tempRoutes();
     }
 
 }
@@ -73,6 +73,18 @@ const nonLoggedInRoutes = () => {
         <Route path="/credits" component={Credits} />
       </Switch>
     );
+}
+
+const tempRoutes = () => {
+    return (
+        <Switch>
+          <Route path="/signup" component={Signup} />
+          <Route path="/login" component={Login} />
+          <Route path="/credits" component={Credits} />
+          <Route path="/main" component={Main} />
+          <Route path="/" component={Main} />
+        </Switch>
+      );
 }
 
 export default withStore(Root);

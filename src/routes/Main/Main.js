@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
+import Dashboard from '../../components/DashboardPage/Dashboard';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Navbar from '../../components/NavBar/';
@@ -17,7 +18,7 @@ import Navbar from '../../components/NavBar/';
 import "./style.css";
 
 class Main extends React.Component {
-
+/*
     componentDidMount() {
         // Here we assume the user is logged in
         let nextRoute = '/main',
@@ -36,13 +37,9 @@ class Main extends React.Component {
         // navigation bar
         this.props.history.push(newRoute);
     }
-
+*/
     render() {
-        return (
-          <div>
-            This is Home Page
-          </div>
-        )
+        return <Dashboard />
         /*
           return (
           <Box className="cldi-home-page">

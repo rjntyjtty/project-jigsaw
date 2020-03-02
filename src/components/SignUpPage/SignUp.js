@@ -50,6 +50,9 @@ export default function SignUp() {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
+      <Link variant="h1" color="primary" href="/">
+            Jigsaw
+          </Link>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>

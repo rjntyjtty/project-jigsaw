@@ -9,7 +9,12 @@ class Credits extends React.Component {
       return(
         <div>
           <h1>Credits:</h1>
-          <a href="https://medium.com/lessons-from-ordinary/lesson-from-a-jigsaw-puzzle-d5f9a8136805">Login Page Image</a>
+          <li>
+            <a href="https://material-ui.com/">Page Templates</a>
+          </li>
+          <li>
+            <a href="https://medium.com/lessons-from-ordinary/lesson-from-a-jigsaw-puzzle-d5f9a8136805">Login Page Image</a>
+          </li>
           <Typography variant="body2" color="textSecondary" align="center">
             <Link color="inherit" href="/">
             Home
