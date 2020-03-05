@@ -5,14 +5,6 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 //import Navbar from '../../components/NavBar/';
 //import LoginManager from '../../components/core/LoginManager/';
-//import JoinFandom from './JoinFandom/';
-//import ViewProfilePage from './ViewProfilePage/';
-//import MessengerPage from './MessengerPage/';
-
-//import NewFandom from './NewFandom/';
-//import ViewContacts from './ViewContacts/ViewContacts'
-//import NewPost from './NewPost/';
-
 //import Home from './Home';
 
 import "./style.css";

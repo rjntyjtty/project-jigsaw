@@ -5,6 +5,7 @@ import Main from './Main/Main';
 import Signup from './Signup/Signup'
 import Login from "./Login/Login";
 import Credits from "./Credits/Credits"
+import Edit from "./Edit/Edit"
 
 class Root extends React.Component {
 
@@ -57,6 +58,9 @@ const loggedInRoutes = (props) => {
         <Route path="/main">
           <Main store={props.store} />
         </Route>
+        <Route path="/edit">
+            <Edit store={props.store} />
+        </Route>
         <Route path="*">
             INVALID ROUTE
         </Route>
@@ -81,6 +85,7 @@ const tempRoutes = () => {
           <Route path="/signup" component={Signup} />
           <Route path="/login" component={Login} />
           <Route path="/credits" component={Credits} />
+          <Route path="/edit" component={Edit} />
           <Route path="/main" component={Main} />
           <Route path="/" component={Main} />
         </Switch>

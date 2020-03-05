@@ -141,35 +141,32 @@ class LoginPage extends React.Component {
         */
         
         this.validateLoginInput()
-            .then(
-                () => {
-                    if (!this.state.passwordError && !this.state.emailError) {
-                        this.setState({ loginInProgress: true, loginFailUnauthorizedError: false, loginFailBadRequestError: false, loginFailInternalServerError: false })
-                        userRequests.loginUserRequest(this.state.email, this.state.password).then(
-                            (loginResponse) => {
-                                if (loginResponse.status === 200) {
-                                    this.setState({ loginSuccess: true })
-                                    /// After we have completed the login sucessfully, we update the global store to have the authenticated user, to be used throughout the app
-                                    this.props.store.set('authenticatedUserEmail', this.state.email)
-                                    this.props.store.set('isLoggedIn', true)
-                                    this.props.store.set('authenticatedOidUser', loginResponse.data.oidUser)
+            .then(() => {
+                if (!this.state.passwordError && !this.state.emailError) {
+                    this.setState({ loginInProgress: true, loginFailUnauthorizedError: false, loginFailBadRequestError: false, loginFailInternalServerError: false })
+                    userRequests.loginUserRequest(this.state.email, this.state.password).then(
+                        (loginResponse) => {
+                            if (loginResponse.status === 200) {
+                                this.setState({ loginSuccess: true })
+                                /// After we have completed the login sucessfully, we update the global store to have the authenticated user, to be used throughout the app
+                                this.props.store.set('authenticatedUserEmail', this.state.email)
+                                this.props.store.set('isLoggedIn', true)
+                                this.props.store.set('authenticatedOidUser', loginResponse.data.oidUser)
 
 
-                                } else if (loginResponse.status === 401) {
-                                    this.setState({ loginFailUnauthorizedError: true })
-                                } else if (loginResponse.status === 400) {
-                                    this.setState({ loginFailBadRequestError: true })
-                                } else if (loginResponse.status === 500) {
-                                    this.setState({ loginFailInternalServerError: true })
-                                }
-                                this.setState({ loginInProgress: false })
-
+                            } else if (loginResponse.status === 401) {
+                                this.setState({ loginFailUnauthorizedError: true })
+                            } else if (loginResponse.status === 400) {
+                                this.setState({ loginFailBadRequestError: true })
+                            } else if (loginResponse.status === 500) {
+                                this.setState({ loginFailInternalServerError: true })
                             }
-                        )
-                    }
+                            this.setState({ loginInProgress: false })
+
+                        }
+                    )
                 }
-            )
-            
+            });
     }
     checkLoginSuccess() {
         if (this.state.loginSuccess) {
