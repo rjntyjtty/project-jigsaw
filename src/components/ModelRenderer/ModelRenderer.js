@@ -4,6 +4,37 @@ import { withStore } from '../../store'
 
 class ModelRenderer extends React.Component {
 
+    constructor() {
+        super();
+        this.state = {
+            createScene: null,
+            engine: new Babylon.Engine(this.refs.renderCanvas, true),
+            scene: null
+        }
+        this.handleCodeUpdate = this.handleCodeUpdate.bind(this);
+    }
+
+    componentDidMount() {
+        window.addEventListener('resize', () => this.state.engine.resize());
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', () => this.state.engine.resize());
+    }
+
+    handleCodeUpdate(code) {
+        this.state.createScene = code;
+        this.state.scene = code();
+        this.state.engine.runRenderLoop(function() {
+                this.state.scene.render();
+        });
+    }
+
+    // Render canvas
+    render () {
+        return (
+        <canvas ref="renderCanvas"></canvas>
+    )}
 }
 
 export default withStore(ModelRenderer);
