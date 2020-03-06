@@ -7,7 +7,6 @@ class ModelRenderer extends React.Component {
     constructor() {
         super();
         this.state = {
-            createScene: null,
             engine: new Babylon.Engine(this.refs.renderCanvas, true),
             scene: null
         }
@@ -23,8 +22,7 @@ class ModelRenderer extends React.Component {
     }
 
     handleCodeUpdate(code) {
-        this.state.createScene = code;
-        this.state.scene = code();
+        this.setState({scene: code()});
         this.state.engine.runRenderLoop(function() {
                 this.state.scene.render();
         });

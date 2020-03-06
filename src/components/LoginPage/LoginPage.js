@@ -241,4 +241,4 @@ function CircularLoading() {
         </Box>
     );
 }
-export default withStore(LoginPage)
+export default withStore(LoginPage);
