@@ -1,16 +1,16 @@
 import React from 'react';
 import Provider from 'react-redux';
-import store from './store'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link
 } from "react-router-dom";
-import { createStore } from './store'
+import { createStore } from 'redux'
 import Root from './routes/index.js';
+import rootReducer from './store/reducers';
 
-// const store = createStore();
+const store = createStore(rootReducer);
 
 class App extends React.Component {
 
