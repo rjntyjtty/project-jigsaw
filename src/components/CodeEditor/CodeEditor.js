@@ -1,7 +1,8 @@
 import React from 'react';
 import AceEditor from "react-ace";
 import Button from '@material-ui/core/Button';
-import { withStore } from '../../store'
+import { connect } from 'react-redux';
+import compileCode from '../../store/actions';
 
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-dracula";
@@ -21,14 +22,10 @@ class CodeEditor extends React.Component {
         return this.state.code !== nextState.code;
     }
 
-    renderCode() {
-        this.props.store.set("renderCode", this.state.code);
-    }
-
     // Render editor
     render () {
         return (
-        <div class="code-editor">
+        <div className="code-editor">
             <AceEditor
                 mode="javascript"
                 theme="dracula"
@@ -39,14 +36,20 @@ class CodeEditor extends React.Component {
                 editorProps={{ $blockScrolling: true }}
                 value={this.state.code}
             />
-            <Button className="compile-button" variant="contained" color="primary" onClick={()=> this.renderCode}>Compile</Button>
+            <Button className="compile-button" variant="contained" color="primary" onClick={()=> this.props.compileCode(this.state.code)}>Compile</Button>
         </div>
     )}
 }
+
+function mapDispatchToProps(dispatch) {
+    return {
+        compileCode: code => dispatch(compileCode({code: code}))
+    };
+};
 
 // TODO :: undo for collab edit
 // var rev = session.$undoManager.startNewGroup(); // start new undo group
 // ... // apply the edit 
 // session.$undoManager.markIgnored(rev); // mark the new group as ignored
 
-export default withStore(CodeEditor);
+export default connect(null, mapDispatchToProps)(CodeEditor);

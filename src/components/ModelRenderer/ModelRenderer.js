@@ -1,12 +1,13 @@
 import React from 'react';
 import * as Babylon from 'babylonjs';
-import { withStore } from '../../store'
+import {connect} from 'react-redux';
 
 class ModelRenderer extends React.Component {
 
     constructor() {
         super();
         this.state = {
+            code: null,
             engine: new Babylon.Engine(this.refs.renderCanvas, true),
             scene: null
         }
@@ -35,4 +36,8 @@ class ModelRenderer extends React.Component {
     )}
 }
 
-export default withStore(ModelRenderer);
+const mapStateToProps = state => {
+    return {code: state.code}
+};
+
+export default connect(mapStateToProps)(ModelRenderer);

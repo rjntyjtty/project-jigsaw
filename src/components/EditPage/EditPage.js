@@ -1,6 +1,5 @@
 import React from 'react';
 import CodeEditor from '../CodeEditor/CodeEditor'
-import { withStore } from '../../store';
 import ModelRenderer from '../ModelRenderer/ModelRenderer';
 
 class EditPage extends React.Component {
@@ -12,7 +11,7 @@ class EditPage extends React.Component {
 
     render() {
         return (
-            <div class='edit-page'>
+            <div className='edit-page'>
                 <CodeEditor />
                 <ModelRenderer />
             </div>
@@ -21,4 +20,4 @@ class EditPage extends React.Component {
 
 }
 
-export default withStore(EditPage);
+export default EditPage;

@@ -1,7 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
-import { withStore } from '../../store';
 
 class Credits extends React.Component {
 
@@ -27,4 +26,4 @@ class Credits extends React.Component {
 
 }
 
-export default withStore(Credits);
+export default Credits;

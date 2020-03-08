@@ -1,16 +1,17 @@
 import React from 'react';
-import Provider from 'react-redux';
+import { Provider } from 'react-redux';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link
 } from "react-router-dom";
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import Root from './routes/index.js';
-import rootReducer from './store/reducers';
+import {rootReducer} from './store/reducers';
+import rendererMiddleWare from './store/middleware.js';
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(rendererMiddleWare));
 
 class App extends React.Component {
 
@@ -29,4 +30,4 @@ class App extends React.Component {
 
 }
 
-export default createStore(App);
+export default App;

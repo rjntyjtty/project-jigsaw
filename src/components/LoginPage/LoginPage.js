@@ -5,7 +5,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import { withStore } from '../../store'
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -241,4 +240,4 @@ function CircularLoading() {
         </Box>
     );
 }
-export default withStore(LoginPage);
+export default LoginPage;

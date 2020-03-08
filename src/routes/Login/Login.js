@@ -1,6 +1,5 @@
 import React from 'react';
 import LoginPage from '../../components/LoginPage/LoginPage'
-import { withStore } from '../../store';
 
 class Login extends React.Component {
 
@@ -10,4 +9,4 @@ class Login extends React.Component {
 
 }
 
-export default withStore(Login);
+export default Login;

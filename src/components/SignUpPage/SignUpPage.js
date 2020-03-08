@@ -1,5 +1,4 @@
 import React from 'react';
-import { withStore } from '../../store'
 import SignUp from './SignUp';
 
 
@@ -10,4 +9,4 @@ class SignUpPage extends React.Component {
         )
     }
 }
-export default withStore(SignUpPage)
+export default SignUpPage;
