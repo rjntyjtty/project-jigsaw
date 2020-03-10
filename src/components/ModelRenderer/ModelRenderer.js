@@ -51,7 +51,7 @@ class ModelRenderer extends React.Component {
     // Render canvas
     render () {
         return (
-        <canvas ref={this.onCanvasLoaded} />
+        <canvas className='split right' ref={this.onCanvasLoaded} />
     )}
 }
 
