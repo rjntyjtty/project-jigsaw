@@ -7,7 +7,8 @@ import compileCode from '../../store/actions';
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-dracula";
 import starterCode from './starterCode';
- 
+
+require('./CodeEditor.css')
 
 class CodeEditor extends React.Component {
 
@@ -30,7 +31,7 @@ class CodeEditor extends React.Component {
     // Render editor
     render () {
         return (
-        <div className="code-editor">
+        <div className="split left">
             <AceEditor
                 mode="javascript"
                 theme="dracula"
@@ -40,6 +41,8 @@ class CodeEditor extends React.Component {
                 name="ace-editor"
                 editorProps={{ $blockScrolling: true }}
                 value={this.state.code}
+                width="100%"
+                height="100%"
             />
             <Button className="compile-button" variant="contained" color="primary" onClick={()=> this.props.compileCode(this.state.code)}>Compile</Button>
         </div>
@@ -54,7 +57,7 @@ function mapDispatchToProps(dispatch) {
 
 // TODO :: undo for collab edit
 // var rev = session.$undoManager.startNewGroup(); // start new undo group
-// ... // apply the edit 
+// ... // apply the edit
 // session.$undoManager.markIgnored(rev); // mark the new group as ignored
 
 export default connect(null, mapDispatchToProps)(CodeEditor);

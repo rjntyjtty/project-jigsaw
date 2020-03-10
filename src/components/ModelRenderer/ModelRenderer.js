@@ -2,6 +2,8 @@ import React from 'react';
 import * as BABYLON from 'babylonjs';
 import {connect} from 'react-redux';
 
+require('./ModelRenderer.css')
+
 class ModelRenderer extends React.Component {
 
     constructor() {
@@ -49,7 +51,13 @@ class ModelRenderer extends React.Component {
     // Render canvas
     render () {
         return (
+<<<<<<< HEAD
         <canvas ref={this.onCanvasLoaded} />
+=======
+          <div className="split right">
+            <canvas ref="renderCanvas"></canvas>
+          </div>
+>>>>>>> c0f11be773c56faa1046edd8b00e2b2bf648b21b
     )}
 }
 
