@@ -4,12 +4,11 @@ function rendererMiddleWare({dispatch}) {
     return function(next) {
         return function(action) {
             if (action.type === COMPILE_CODE) {
-                action.payload.code =
-                `"use strict";
-                ${action.payload.code}`
-            } else {
-                 return next(action);
+                // actually don't need this
+                // action.payload.code =
+                // `'use strict';${action.payload.code}`;
             }
+            return next(action);
         }
     }
 }

@@ -51,32 +51,32 @@ class Root extends React.Component {
 
 }
 
-const loggedInRoutes = (props) => {
-    return (
-      <Switch>
-        <Route path="/main">
-          <Main store={props.store} />
-        </Route>
-        <Route path="/edit">
-            <Edit store={props.store} />
-        </Route>
-        <Route path="*">
-            INVALID ROUTE
-        </Route>
-        <Route path="/credits" component={Credits} />
-      </Switch>
-    );
-}
+// const loggedInRoutes = (props) => {
+//     return (
+//       <Switch>
+//         <Route path="/main">
+//           <Main store={props.store} />
+//         </Route>
+//         <Route path="/edit">
+//             <Edit store={props.store} />
+//         </Route>
+//         <Route path="*">
+//             INVALID ROUTE
+//         </Route>
+//         <Route path="/credits" component={Credits} />
+//       </Switch>
+//     );
+// }
 
-const nonLoggedInRoutes = () => {
-    return (
-      <Switch>
-        <Route path="/signup" component={Signup} />
-        <Route path="/login" component={Login} />
-        <Route path="/credits" component={Credits} />
-      </Switch>
-    );
-}
+// const nonLoggedInRoutes = () => {
+//     return (
+//       <Switch>
+//         <Route path="/signup" component={Signup} />
+//         <Route path="/login" component={Login} />
+//         <Route path="/credits" component={Credits} />
+//       </Switch>
+//     );
+// }
 
 const tempRoutes = () => {
     return (

@@ -1,15 +1,16 @@
-import React from 'react'
 import { COMPILE_CODE } from './action-types';
 
 const initialState = {
-    code: null
+    code: null,
+    createScene: null
 };
 
 function rootReducer(state=initialState, action) {
     if (action.type === COMPILE_CODE) {
-        state.code = action.payload;
+        if (state.code !== action.payload.code) console.log("code has changed, updating state");
+        state = Object.assign({}, state, {code: action.payload.code});
     }
     return state;
 }
 
-export { rootReducer }
+export { rootReducer };

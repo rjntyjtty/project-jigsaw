@@ -1,13 +1,9 @@
 import React from 'react';
 import CodeEditor from '../CodeEditor/CodeEditor'
 import ModelRenderer from '../ModelRenderer/ModelRenderer';
+import { connect } from 'react-redux';
 
 class EditPage extends React.Component {
-
-    constructor() {
-        super();
-
-    }
 
     render() {
         return (
@@ -20,4 +16,4 @@ class EditPage extends React.Component {
 
 }
 
-export default EditPage;
+export default connect()(EditPage);

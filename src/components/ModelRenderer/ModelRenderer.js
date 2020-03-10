@@ -1,5 +1,5 @@
 import React from 'react';
-import * as Babylon from 'babylonjs';
+import * as BABYLON from 'babylonjs';
 import {connect} from 'react-redux';
 
 class ModelRenderer extends React.Component {
@@ -8,13 +8,13 @@ class ModelRenderer extends React.Component {
         super();
         this.state = {
             code: null,
-            engine: new Babylon.Engine(this.refs.renderCanvas, true),
+            createScene: null,
+            engine: new BABYLON.Engine(this.refs.renderCanvas, true),
             scene: null
         }
-        this.handleCodeUpdate = this.handleCodeUpdate.bind(this);
     }
 
-    componentDidMount() {
+    componentWillMount() {
         window.addEventListener('resize', () => this.state.engine.resize());
     }
 
@@ -22,21 +22,39 @@ class ModelRenderer extends React.Component {
         window.removeEventListener('resize', () => this.state.engine.resize());
     }
 
-    handleCodeUpdate(code) {
-        this.setState({scene: code()});
-        this.state.engine.runRenderLoop(function() {
-                this.state.scene.render();
-        });
+    componentDidUpdate(oldProps) {
+        console.log('renderer updated');
+        // if (oldProps.scene !== this.props.scene) {
+            if (oldProps.scene != null) {
+                oldProps.scene.dispose();
+            }
+            let createScene = function(){};
+            console.log(this.state);
+            // eval(this.props.code);
+            let scene = createScene(window, this.state.engine, this.refs.renderCanvas);
+            if (scene) {
+                    this.state.engine.runRenderLoop(function() {
+                    scene.render();
+                });
+            }
+        // }
+    }
+
+    onCanvasLoaded = (canvas) => {
+        if (canvas !== null) {
+            this.state.canvas = canvas;
+        }
     }
 
     // Render canvas
     render () {
         return (
-        <canvas ref="renderCanvas"></canvas>
+        <canvas ref={this.onCanvasLoaded} />
     )}
 }
 
 const mapStateToProps = state => {
+    console.log(state);
     return {code: state.code}
 };
 
