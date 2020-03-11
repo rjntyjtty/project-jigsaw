@@ -20,7 +20,7 @@ class CodeEditor extends React.Component {
         super();
         this.state = {
             room:'',
-            code: ''
+            code: starterCode
         }
 
         if(window.location.pathname !== '/edit' && window.location.pathname !== ''){
