@@ -1,6 +1,6 @@
 export const starterCode =
 `
-createScene = function() {
+var createScene = function() {
     // Create a basic BJS Scene object.
     var scene = new BABYLON.Scene(engine);
 

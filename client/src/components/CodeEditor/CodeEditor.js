@@ -52,6 +52,7 @@ class CodeEditor extends React.Component {
 
     onChange = (newValue) => {
       socket.emit('message', {newValue, room: this.state.room})
+      this.setState({code: newValue});
     }
 
     // https://github.com/securingsincity/react-ace/issues/181
@@ -73,7 +74,7 @@ class CodeEditor extends React.Component {
                 width="100%"
                 height="100%"
             />
-            <Button className="compile-button" variant="contained" color="primary" onClick={()=> this.props.compileCode(this.state.code)}>Compile</Button>
+            <Button className="compile-button" variant="contained" color="primary" onClick={()=> {this.props.compileCode(this.state.code)}}>Compile</Button>
         </div>
     )}
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import * as BABYLON from 'babylonjs';
 import {connect} from 'react-redux';
+import playground from './playground';
 
 require('./ModelRenderer.css')
 
@@ -9,54 +10,21 @@ class ModelRenderer extends React.Component {
     constructor() {
         super();
         this.state = {
-            code: null,
-            createScene: null,
-            engine: new BABYLON.Engine(this.refs.renderCanvas, true),
-            scene: null
+            code: null
         }
     }
 
-    componentWillMount() {
-        window.addEventListener('resize', () => this.state.engine.resize());
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('resize', () => this.state.engine.resize());
-    }
-
-    componentDidUpdate(oldProps) {
-        console.log('renderer updated');
-        // if (oldProps.scene !== this.props.scene) {
-            if (oldProps.scene != null) {
-                oldProps.scene.dispose();
-            }
-            let createScene = function(){};
-            console.log(this.state);
-            // eval(this.props.code);
-            let scene = createScene(window, this.state.engine, this.refs.renderCanvas);
-            if (scene) {
-                    this.state.engine.runRenderLoop(function() {
-                    scene.render();
-                });
-            }
-        // }
-    }
-
-    onCanvasLoaded = (canvas) => {
-        if (canvas !== null) {
-            this.state.canvas = canvas;
-        }
-    }
-
-    // Render canvas
+    // Render model
     render () {
         return (
-        <canvas className='split right' ref={this.onCanvasLoaded} />
-    )}
+            <iframe className='split right' ref='renderFrame' srcDoc={playground(this.props.code)}></iframe>
+        )
+    }
 }
 
 const mapStateToProps = state => {
-    console.log(state);
+    console.log('mapping state to props');
+    console.log(state.code);
     return {code: state.code}
 };
 
