@@ -1,0 +1,29 @@
+header{
+    display:flex;
+}
+
+header #title{
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    color: green;
+    font-weight: 900;
+    text-decoration: none;
+    font-size:48px;
+}
+
+body {
+  font: 14px "Century Gothic", Futura, sans-serif;
+  margin: 20px;
+}
+
+ol, ul {
+  padding-left: 30px;
+}
+
+.hidden{
+    display: none;
+}
+
+.cool_box {
+	background-color: #f2f2f2;
+	box-shadow: 2px 4px #888888;
+}
