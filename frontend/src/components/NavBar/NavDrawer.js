@@ -18,21 +18,8 @@ import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
-import Deposits from './Deposits';
-import Orders from './Orders';
-import NavAppBar from '../NavBar/NavAppBar';
+import { mainListItems, secondaryListItems } from '../DashboardPage/listItems';
 import { Button } from '@material-ui/core';
-
-function Credits() {
-    return (
-      <Typography variant="body2" color="textSecondary" align="center">
-        <Link color="inherit" href="/credits">
-        Credits
-        </Link>
-      </Typography>
-    );
-  }
 
 const drawerWidth = 240;
 
@@ -132,35 +119,23 @@ export default function Dashboard() {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <NavAppBar name="Dashboard"/>
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            {/* Deposits again */}
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper className={fixedHeightPaper}>
-                <Deposits />
-              </Paper>
-            </Grid>
-            {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <Deposits />
-              </Paper>
-            </Grid>
-            {/* Recent Orders */}
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Orders />
-              </Paper>
-            </Grid>
-          </Grid>
-          <Box pt={4}>
-            <Credits />
-          </Box>
-        </Container>
-      </main>
+      <Drawer
+        variant="permanent"
+        classes={{
+          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+        }}
+        open={open}
+      >
+        <div className={classes.toolbarIcon}>
+          <IconButton onClick={handleDrawerClose}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </div>
+        <Divider />
+        <List>{mainListItems}</List>
+        <Divider />
+        <List>{secondaryListItems}</List>
+      </Drawer>
     </div>
   );
 }

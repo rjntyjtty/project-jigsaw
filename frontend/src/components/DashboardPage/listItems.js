@@ -13,7 +13,7 @@ import FeaturedPlayListIcon from '@material-ui/icons/FeaturedPlayList';
 
 export const mainListItems = (
   <div>
-    <ListItem button>
+    <ListItem button component="a" href="/">
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>

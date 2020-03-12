@@ -22,7 +22,7 @@ const styles = {
 function SideDrawer(props) {
   const { classes, onClose, open } = props;
   return (
-    <Drawer anchor="right" open={open} variant="permanent" onClose={onClose}>
+    <Drawer anchor="right" open={open} variant="temporary" onClose={onClose}>
       <Toolbar disableGutters className={classes.toolbar}>
         <Box
           pl={3}
