@@ -20,12 +20,11 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ChatIcon from '@material-ui/icons/Chat';
 import { mainListItems, secondaryListItems } from '../DashboardPage/listItems';
-
-import { Button } from '@material-ui/core';
+import { Button, withStyles } from '@material-ui/core';
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
   root: {
     display: 'flex',
   },
@@ -106,38 +105,50 @@ const useStyles = makeStyles(theme => ({
   link: {
     margin: theme.spacing(1, 1),
   },
-}));
+});
 
-export default function NavAppBar(props) {
-  const { name } = props;
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+class NavAppBar extends React.Component {
 
+  handleDrawerOpen = () => {
+    this.setState({ open: true });
+  };
+  handleDrawerClose = () => {
+    this.setState({ open: false });
+  };
+  //fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+  constructor(props) {
+      super(props);
+
+      this.state = {
+          open: false
+      }
+  }
+
+  render(){
+  const open = this.state.open;
   return (
-    <div className={classes.root}>
+    <div className={this.props.classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={clsx(classes.appBar, open && classes.appBarShift)}>
-        <Toolbar className={classes.toolbar}>
+      <AppBar position="fixed" className={clsx(this.props.classes.appBar, open && this.props.classes.appBarShift)}>
+        <Toolbar className={this.props.classes.toolbar}>
           <IconButton
             edge="start"
             color="inherit"
             aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+            onClick={this.handleDrawerOpen}
+            className={clsx(this.props.classes.menuButton, open && this.props.classes.menuButtonHidden)}
           >
             <MenuIcon />
           </IconButton>
-          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            {name}
+          <Typography component="h1" variant="h6" color="inherit" noWrap className={this.props.classes.title}>
+            {this.props.name}
           </Typography>
-          <IconButton color="inherit">
+          <IconButton
+          color="inherit"
+          onClick={this.props.onOpen}
+          aria-label="Open Sidedrawer"
+          >
             <Badge badgeContent={"!"} color="secondary">
               <ChatIcon />
             </Badge>
@@ -146,7 +157,7 @@ export default function NavAppBar(props) {
             href="/login"
             color="inherit"
             variant="outlined"
-            className={classes.link}>
+            className={this.props.classes.link}>
             Login
           </Button>
         </Toolbar>
@@ -154,12 +165,12 @@ export default function NavAppBar(props) {
       <Drawer
         variant="permanent"
         classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+          paper: clsx(this.props.classes.drawerPaper, !open && this.props.classes.drawerPaperClose),
         }}
         open={open}
       >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
+        <div className={this.props.classes.toolbarIcon}>
+          <IconButton onClick={this.handleDrawerClose}>
             <ChevronLeftIcon />
           </IconButton>
         </div>
@@ -171,3 +182,5 @@ export default function NavAppBar(props) {
     </div>
   );
 }
+}
+export default (withStyles(styles, { withTheme: true })(NavAppBar));

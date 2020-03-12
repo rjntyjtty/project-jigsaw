@@ -4,9 +4,10 @@ import ModelRenderer from '../ModelRenderer/ModelRenderer';
 import { connect } from 'react-redux';
 import SideDrawer from './SideDrawer';
 import NavAppBar from '../NavBar/NavAppBar';
+//import NavAppBar2 from '../NavBar/NavAppBar2';
 require('./EditPage.css')
 class EditPage extends React.Component {
-  state = { sideDrawerOpen: true };
+  state = { sideDrawerOpen: false };
 
   closeDrawer = () => {
     this.setState({ sideDrawerOpen: false });
@@ -20,7 +21,7 @@ class EditPage extends React.Component {
         const { mobileOpen, sideDrawerOpen } = this.state;
         return (
             <div className='edit-page'>
-                <NavAppBar name="Edit"/>
+                <NavAppBar name="Edit" hasChat="true" onOpen={this.openDrawer} />
                 <CodeEditor />
                 <ModelRenderer />
                 <SideDrawer open={this.state.sideDrawerOpen} onClose={this.closeDrawer} />

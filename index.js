@@ -33,6 +33,10 @@ io.sockets.on('connection', (socket) => {
         io.in(message.room).emit('message',{room:message.room, value:message.newValue})
     })
 
+    socket.on('chat message', (msg) => {
+        io.in(msg.room).emit('chat message',{room:msg.room, value:msg.chat})
+    })
+
     // socket.on('toolbar', (settings) => {
     //     console.log('settngs', settings)
     //     io.in(settings.room).emit('toolbar', settings)
