@@ -86,6 +86,7 @@ const tempRoutes = () => {
           <Route path="/credits" component={Credits} />
           <Route path="/edit" component={Edit} />
           <Route path="/main" component={Main} />
+          <Route path="/" component={Main} />
         </Switch>
       );
 }

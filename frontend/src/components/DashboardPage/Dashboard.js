@@ -150,10 +150,10 @@ export default function Dashboard() {
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <Button 
-            href="/login" 
-            color="inherit" 
-            variant="outlined" 
+          <Button
+            href="/login"
+            color="inherit"
+            variant="outlined"
             className={classes.link}>
             Login
           </Button>
