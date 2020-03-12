@@ -1,0 +1,16 @@
+version: 3.7
+
+services:
+
+    jigsaw:
+        container_name: jigsaw
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - '.:/jigsaw'
+            - '/jigsaw/node_modules'
+        ports:
+            - '5000:5001'
+        environment: 
+            - NODE_ENV=prod
