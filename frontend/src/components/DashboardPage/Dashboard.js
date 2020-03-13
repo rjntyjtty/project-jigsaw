@@ -132,7 +132,7 @@ export default function Dashboard() {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <NavAppBar name="Dashboard"/>
+      <NavAppBar name="Dashboard" hasChat="false"/>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>

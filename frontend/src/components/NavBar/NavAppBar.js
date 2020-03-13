@@ -126,61 +126,111 @@ class NavAppBar extends React.Component {
   }
 
   render(){
-  const open = this.state.open;
-  return (
-    <div className={this.props.classes.root}>
-      <CssBaseline />
-      <AppBar position="fixed" className={clsx(this.props.classes.appBar, open && this.props.classes.appBarShift)}>
-        <Toolbar className={this.props.classes.toolbar}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={this.handleDrawerOpen}
-            className={clsx(this.props.classes.menuButton, open && this.props.classes.menuButtonHidden)}
+    const open = this.state.open;
+    console.log(this.props.hasChat);
+    if (this.props.hasChat == "true") {
+      return (
+        <div className={this.props.classes.root}>
+          <CssBaseline />
+          <AppBar position="fixed" className={clsx(this.props.classes.appBar, open && this.props.classes.appBarShift)}>
+            <Toolbar className={this.props.classes.toolbar}>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="open drawer"
+                onClick={this.handleDrawerOpen}
+                className={clsx(this.props.classes.menuButton, open && this.props.classes.menuButtonHidden)}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography component="h1" variant="h6" color="inherit" noWrap className={this.props.classes.title}>
+                {this.props.name}
+              </Typography>
+              <IconButton
+              color="inherit"
+              onClick={this.props.onOpen}
+              aria-label="Open Sidedrawer"
+              >
+                <Badge badgeContent={"!"} color="secondary">
+                  <ChatIcon />
+                </Badge>
+              </IconButton>
+              <Button
+                href="/login"
+                color="inherit"
+                variant="outlined"
+                className={this.props.classes.link}>
+                Login
+              </Button>
+            </Toolbar>
+          </AppBar>
+          <Drawer
+            variant="permanent"
+            classes={{
+              paper: clsx(this.props.classes.drawerPaper, !open && this.props.classes.drawerPaperClose),
+            }}
+            open={open}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography component="h1" variant="h6" color="inherit" noWrap className={this.props.classes.title}>
-            {this.props.name}
-          </Typography>
-          <IconButton
-          color="inherit"
-          onClick={this.props.onOpen}
-          aria-label="Open Sidedrawer"
-          >
-            <Badge badgeContent={"!"} color="secondary">
-              <ChatIcon />
-            </Badge>
-          </IconButton>
-          <Button
-            href="/login"
-            color="inherit"
-            variant="outlined"
-            className={this.props.classes.link}>
-            Login
-          </Button>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: clsx(this.props.classes.drawerPaper, !open && this.props.classes.drawerPaperClose),
-        }}
-        open={open}
-      >
-        <div className={this.props.classes.toolbarIcon}>
-          <IconButton onClick={this.handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
+            <div className={this.props.classes.toolbarIcon}>
+              <IconButton onClick={this.handleDrawerClose}>
+                <ChevronLeftIcon />
+              </IconButton>
+            </div>
+            <Divider />
+            <List>{mainListItems}</List>
+            <Divider />
+            <List>{secondaryListItems}</List>
+          </Drawer>
         </div>
-        <Divider />
-        <List>{mainListItems}</List>
-        <Divider />
-        <List>{secondaryListItems}</List>
-      </Drawer>
-    </div>
-  );
-}
+      );
+    } else {
+      return (
+        <div className={this.props.classes.root}>
+          <CssBaseline />
+          <AppBar position="fixed" className={clsx(this.props.classes.appBar, open && this.props.classes.appBarShift)}>
+            <Toolbar className={this.props.classes.toolbar}>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="open drawer"
+                onClick={this.handleDrawerOpen}
+                className={clsx(this.props.classes.menuButton, open && this.props.classes.menuButtonHidden)}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography component="h1" variant="h6" color="inherit" noWrap className={this.props.classes.title}>
+                {this.props.name}
+              </Typography>
+              <Button
+                href="/login"
+                color="inherit"
+                variant="outlined"
+                className={this.props.classes.link}>
+                Login
+              </Button>
+            </Toolbar>
+          </AppBar>
+          <Drawer
+            variant="permanent"
+            classes={{
+              paper: clsx(this.props.classes.drawerPaper, !open && this.props.classes.drawerPaperClose),
+            }}
+            open={open}
+          >
+            <div className={this.props.classes.toolbarIcon}>
+              <IconButton onClick={this.handleDrawerClose}>
+                <ChevronLeftIcon />
+              </IconButton>
+            </div>
+            <Divider />
+            <List>{mainListItems}</List>
+            <Divider />
+            <List>{secondaryListItems}</List>
+          </Drawer>
+        </div>
+      );
+    }
+
+  }
 }
 export default (withStyles(styles, { withTheme: true })(NavAppBar));

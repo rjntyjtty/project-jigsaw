@@ -19,6 +19,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import socketIOClient from 'socket.io-client';
 const socket = socketIOClient('http://localhost:5000');
 
+require('./SideDrawer.css');
+
 const drawerWidth = 300;
 
 const styles = {
@@ -32,9 +34,13 @@ class SideDrawer extends React.Component {
 
       this.state = {
           classes:props.classes,
+          value:'',
           room:'',
-          messages: ["hello", "goodbye"]
+          messages: []
       }
+
+      this.handleChange = this.handleChange.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
 
       if(window.location.pathname !== '/edit' && window.location.pathname !== ''){
         socket.emit('join', window.location.pathname)
@@ -49,19 +55,31 @@ class SideDrawer extends React.Component {
 
       socket.on('chat message', (msg) => {
         this.setState({
-          messages: this.messages.push(msg.value),
+          messages: [...this.state.messages, msg.value],
           room: msg.room
         })
+        //window.scrollTo(0, document.body.scrollHeight);
       })
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    socket.emit('chat message', {chat: this.state.value, room: this.state.room});
+    event.preventDefault();
+    this.setState({
+      value: ''
+    });
   }
 
   render() {
     const history = this.state.messages;
-    const chatHistory = history.map( msg => {
+    console.log(history);
+    const chatHistory = history.map( (msg, key) => {
       return (
-        <ListItem>
-          <ListItemText primary={msg} />
-        </ListItem>
+          <li id="message" key={key}>{msg}</li>
       );
     });
 
@@ -89,9 +107,10 @@ class SideDrawer extends React.Component {
             </Box>
           </Toolbar>
           <Divider />
-          <List>
-          {chatHistory}
-          </List>
+          <ul id="messages">{chatHistory}</ul>
+          <form className="form" onSubmit={this.handleSubmit}>
+            <input className="input" type="text" value={this.state.value} onChange={this.handleChange} /><button className="button">Send</button>
+          </form>
         </Drawer>
       );
 

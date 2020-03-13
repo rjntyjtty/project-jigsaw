@@ -4,8 +4,9 @@ import ModelRenderer from '../ModelRenderer/ModelRenderer';
 import { connect } from 'react-redux';
 import SideDrawer from './SideDrawer';
 import NavAppBar from '../NavBar/NavAppBar';
-//import NavAppBar2 from '../NavBar/NavAppBar2';
+import Container from '@material-ui/core/Container';
 require('./EditPage.css')
+
 class EditPage extends React.Component {
   state = { sideDrawerOpen: false };
 
@@ -22,9 +23,11 @@ class EditPage extends React.Component {
         return (
             <div className='edit-page'>
                 <NavAppBar name="Edit" hasChat="true" onOpen={this.openDrawer} />
-                <CodeEditor />
-                <ModelRenderer />
-                <SideDrawer open={this.state.sideDrawerOpen} onClose={this.closeDrawer} />
+                <Container >
+                  <CodeEditor />
+                  <ModelRenderer />
+                  <SideDrawer open={this.state.sideDrawerOpen} onClose={this.closeDrawer} />
+                </Container>
             </div>
         )
     }
