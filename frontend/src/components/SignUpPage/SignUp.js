@@ -50,12 +50,12 @@ class SignUp extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
+        /*this.state = {  // probably delete, unless using setState is considered better coding style than having mutable class variables, idk
             signUpFirstName:'',
             signUpLastName:'',
             signUpEmail:'',
             signUpPassword:''
-        }
+        }*/
 
         this.handleSignUp = this.handleSignUp.bind(this);
     }
@@ -63,18 +63,13 @@ class SignUp extends React.Component {
     handleSignUp = (e) => {
         // prevent from refreshing the page on submit
         e.preventDefault();
-        console.log("pressed submit");
-        //console.log(this.firstname.value);
-        //this.setState({ signUpFirstName: this.firstname.value, signUpLastName: this.lastname.value, signUpEmail: this.email.value, signUpPassword: this.password.value });
-        //console.log(this.state.signUpFirstName);
-        // { email: signUpEmail, password: signUpPassword, firstname: signUpFirstName, lastname: signUpLastName}
         const new_user = { email: this.email.value, password: this.password.value, firstname: this.firstname.value, lastname: this.lastname.value }
 
         axios
-            .post('http://localhost:3000/api/signup/', new_user) // .then((res) => console.log('Signed up'))
+            .post('http://localhost:3000/api/signup/', new_user)
             .then(() => window.location.href = '/')
             .catch(err => {
-                console.error(err);
+                console.error(err);  // TODO: change this to be user-friendly error
             });
     };
     

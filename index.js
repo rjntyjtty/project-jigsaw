@@ -85,13 +85,11 @@ app.use(function (req, res, next) {
 
 // curl -H "Content-Type: application/json" -X POST -d '{"email":"alice","password":"alice"}' -c cookie.txt localhost:3000/signup/
 app.post('/api/signup/', function (req, res, next) {
-    console.log(req.body);
     let email = req.body.email;
     let password = req.body.password;
     let firstName = req.body.firstName;
     let lastName = req.body.lastName;
-    
-    console.log("password", password);
+
     users.findOne({ _id: email }, function (err, user) {
         if (err) return res.status(500).end(err);
         if (user) return res.status(409).end("An account already exists with email: " + email);
