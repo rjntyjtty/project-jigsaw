@@ -148,3 +148,19 @@ app.get('/api/signout/', function (req, res, next) {
     }));
     res.redirect('/');
 });
+
+app.get('/api/users/', function (req, res, next) {
+    users.find({}).sort({ '_id': 1 }).exec(function (err, users) {
+        if (err) return res.status(500).end(err);
+        return res.json(users);
+    });
+});
+
+
+app.get('/api/currrent_user/', function (req, res, next) {
+    users.find({ _id: req.session.email }, function (err, curr_user) {
+        if (err) return res.status(500).end(err);
+        if (!curr_user) return res.status(404).end("Currently signed out");
+        return res.json(curr_user);
+    });
+}
