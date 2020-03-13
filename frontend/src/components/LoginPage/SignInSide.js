@@ -12,6 +12,9 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
+
+//const axios = require('axios');
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -55,7 +58,20 @@ function Credits() {
 }
 
 export default function SignInSide() {
-  const classes = useStyles();
+    const classes = useStyles();
+
+    const handleSignIn = (e) => {
+        // prevent from refreshing the page on submit
+        e.preventDefault();
+
+        axios
+            .post('http://localhost:3000/signin/', { email: this.signInEmail, password: this.signInPassword })
+            .then((res) => console.log('Signed in', this.signInEmail, "\nres:", res))
+            .then(() => window.location.href = '/')
+            .catch(err => {
+                console.error(err);
+            });
+    };
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -83,6 +99,9 @@ export default function SignInSide() {
               name="email"
               autoComplete="email"
               autoFocus
+              inputRef={node => {
+                  this.signInEmail = node;
+                }}
             />
             <TextField
               variant="outlined"
@@ -94,6 +113,9 @@ export default function SignInSide() {
               type="password"
               id="password"
               autoComplete="current-password"
+              inputRef={node => {
+                  this.signInPassword = node;
+                }}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -104,7 +126,8 @@ export default function SignInSide() {
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick="location.href='/main'"
+              //onClick="location.href='/main'"
+              onClick={handleSignIn}
             >
               Sign In
             </Button>
@@ -122,5 +145,7 @@ export default function SignInSide() {
         </div>
       </Grid>
     </Grid>
-  );
+    );
+
+    
 }
