@@ -127,7 +127,23 @@ class NavAppBar extends React.Component {
 
   render(){
     const open = this.state.open;
-    console.log(this.props.hasChat);
+    const loggedInOrOut = () => {
+
+    }
+    const messageButton = () => {
+      return (
+        <IconButton
+        color="inherit"
+        onClick={this.props.onOpen}
+        aria-label="Open Sidedrawer"
+        >
+          <Badge badgeContent={"!"} color="secondary">
+            <ChatIcon />
+          </Badge>
+        </IconButton>
+      );
+    }
+
     if (this.props.hasChat == "true") {
       return (
         <div className={this.props.classes.root}>
@@ -146,15 +162,7 @@ class NavAppBar extends React.Component {
               <Typography component="h1" variant="h6" color="inherit" noWrap className={this.props.classes.title}>
                 {this.props.name}
               </Typography>
-              <IconButton
-              color="inherit"
-              onClick={this.props.onOpen}
-              aria-label="Open Sidedrawer"
-              >
-                <Badge badgeContent={"!"} color="secondary">
-                  <ChatIcon />
-                </Badge>
-              </IconButton>
+              {messageButton}
               <Button
                 href="/login"
                 color="inherit"
