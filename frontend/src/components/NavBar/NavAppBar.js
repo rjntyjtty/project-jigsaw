@@ -21,6 +21,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import ChatIcon from '@material-ui/icons/Chat';
 import { mainListItems, secondaryListItems } from '../DashboardPage/listItems';
 import { Button, withStyles } from '@material-ui/core';
+import axios from 'axios';
 
 const drawerWidth = 240;
 
@@ -115,6 +116,13 @@ class NavAppBar extends React.Component {
   handleDrawerClose = () => {
     this.setState({ open: false });
   };
+  handleSignOut = () => {
+    axios
+        .get('http://localhost:3000/api/signout/')
+        .then(res => {
+          window.location.href="/";
+        });
+  }
 
   messageButton() {
     if (this.props.hasChat == "true") {
@@ -133,7 +141,7 @@ class NavAppBar extends React.Component {
   }
 
   loginLogoutButton() {
-    if (true) {
+    if (this.state.current_user == "") {
       return (
           <Button
             href="/login"
@@ -146,21 +154,21 @@ class NavAppBar extends React.Component {
     } else {
       return (
           <Button
-            href="/signup"
+            onClick={this.handleSignOut}
             color="inherit"
             variant="outlined"
             className={this.props.classes.link}>
-            Signup
+            Sign out
           </Button>
       );
     }
   }
 
   username() {
-    if (true) {
+    if (this.state.current_user != "") {
       return (
         <Typography component="h1" variant="h6" color="inherit" noWrap >
-          Your name here
+          {this.state.current_user}
         </Typography>
       );
     }
@@ -170,11 +178,24 @@ class NavAppBar extends React.Component {
       super(props);
 
       this.state = {
-          open: false
+          open: false,
+          current_user: ""
       }
 
   }
 
+  componentDidMount() {
+    axios
+        .get('http://localhost:3000/api/currrent_user/')
+        .then(res => {
+          try {
+            this.setState({current_user: res.data[0].firstName})
+          } catch {
+            console.log(res.data);
+          }
+          //console.log(res.data[0].firstName);
+        });
+  }
   render(){
     const open = this.state.open;
 

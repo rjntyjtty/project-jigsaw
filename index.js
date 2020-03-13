@@ -10,7 +10,7 @@ const session = require('express-session');
 app.use(bodyParser.json());
 
 // Serve the static files from the React app
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, 'frontend/build')));
 
 // An api endpoint that returns a short list of items
 app.get('/api/getList', (req,res) => {
@@ -44,11 +44,6 @@ io.sockets.on('connection', (socket) => {
         console.log('user disconnected');
     });
 })
-
-// Handles any requests that don't match the ones above
-app.get('*', (req,res) =>{
-    res.sendFile(path.join(__dirname+'/client/build/index.html'));
-});
 
 server.listen(5000);
 
@@ -87,8 +82,9 @@ app.use(function (req, res, next) {
 app.post('/api/signup/', function (req, res, next) {
     let email = req.body.email;
     let password = req.body.password;
-    let firstName = req.body.firstName;
-    let lastName = req.body.lastName;
+    let firstName = req.body.firstname;
+    let lastName = req.body.lastname;
+    console.log(req.body);
 
     users.findOne({ _id: email }, function (err, user) {
         if (err) return res.status(500).end(err);
@@ -158,9 +154,15 @@ app.get('/api/users/', function (req, res, next) {
 
 
 app.get('/api/currrent_user/', function (req, res, next) {
+    console.log("Current User", req.session.email);
     users.find({ _id: req.session.email }, function (err, curr_user) {
         if (err) return res.status(500).end(err);
         if (!curr_user) return res.status(404).end("Currently signed out");
         return res.json(curr_user);
     });
-}
+});
+
+// Handles any requests that don't match the ones above
+app.get('*', (req,res) =>{
+    res.sendFile(path.join(__dirname+'/frontend/build/index.html'));
+});
