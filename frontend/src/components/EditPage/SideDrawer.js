@@ -15,6 +15,8 @@ import ChatIcon from '@material-ui/icons/Chat';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import axios from 'axios';
+import generateRandom from 'sillyname';
 
 import socketIOClient from 'socket.io-client';
 const socket = socketIOClient('http://localhost:5000');
@@ -36,7 +38,8 @@ class SideDrawer extends React.Component {
           classes:props.classes,
           value:'',
           room:'',
-          messages: []
+          messages: [],
+          current_user: ''
       }
 
       this.handleChange = this.handleChange.bind(this);
@@ -55,11 +58,24 @@ class SideDrawer extends React.Component {
 
       socket.on('chat message', (msg) => {
         this.setState({
-          messages: [...this.state.messages, msg.value],
+          messages: [...this.state.messages, {user: msg.user, value: msg.value}],
           room: msg.room
         })
         //window.scrollTo(0, document.body.scrollHeight);
       })
+  }
+
+  componentDidMount() {
+    axios
+        .get('http://localhost:3000/api/currrent_user/')
+        .then(res => {
+          try {
+            this.setState({current_user: res.data[0].firstName})
+          } catch {
+            this.setState({current_user: "Anonymous " + generateRandom()})
+          }
+          //console.log(res.data[0].firstName);
+        });
   }
 
   handleChange(event) {
@@ -67,7 +83,7 @@ class SideDrawer extends React.Component {
   }
 
   handleSubmit(event) {
-    socket.emit('chat message', {chat: this.state.value, room: this.state.room});
+    socket.emit('chat message', {value: this.state.value, room: this.state.room, user: this.state.current_user});
     event.preventDefault();
     this.setState({
       value: ''
@@ -79,7 +95,10 @@ class SideDrawer extends React.Component {
     console.log(history);
     const chatHistory = history.map( (msg, key) => {
       return (
-          <li id="message" key={key}>{msg}</li>
+          <li id="message" key={key}>
+            <div id="message" key={key}>{msg.user}:</div>
+            {msg.value}
+          </li>
       );
     });
 
