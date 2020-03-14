@@ -38,13 +38,8 @@ io.sockets.on('connection', (socket) => {
     });
 
     socket.on('chat message', (msg) => {
-<<<<<<< HEAD
         io.in(msg.room).emit('chat message',{room:msg.room, value:msg.value, user:msg.user})
     })
-=======
-        io.in(msg.room).emit('chat message',{room:msg.room, value:msg.chat})
-    });
->>>>>>> 9ff49f808cb8302da282d30901873d6022b2cf3f
 
     // socket.on('toolbar', (settings) => {
     //     console.log('settngs', settings)
