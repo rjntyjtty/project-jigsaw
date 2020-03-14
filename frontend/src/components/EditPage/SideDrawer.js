@@ -50,7 +50,6 @@ class SideDrawer extends React.Component {
       }
 
       socket.on('room', (room) => {
-        console.log(room)
         this.setState({
           room: room
         })
@@ -74,7 +73,6 @@ class SideDrawer extends React.Component {
           } catch {
             this.setState({current_user: "Anonymous " + generateRandom()})
           }
-          //console.log(res.data[0].firstName);
         });
   }
 
@@ -92,7 +90,6 @@ class SideDrawer extends React.Component {
 
   render() {
     const history = this.state.messages;
-    console.log(history);
     const chatHistory = history.map( (msg, key) => {
       return (
           <li id="message" key={key}>

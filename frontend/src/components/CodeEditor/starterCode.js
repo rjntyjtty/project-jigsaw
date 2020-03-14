@@ -15,8 +15,6 @@ export const starterCode =
     // Create a basic light, aiming 0,1,0 - meaning, to the sky.
     var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0,1,0), scene);
 
-    console.log(canvas);
-
     // Create a built-in "sphere" shape. 
     var sphere = BABYLON.MeshBuilder.CreateSphere('sphere', {segments:16, diameter:2}, scene);
 

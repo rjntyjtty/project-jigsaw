@@ -29,20 +29,18 @@ class CodeEditor extends React.Component {
         }
 
         socket.on('room', (room) => {
-          console.log(room)
           this.setState({
             room: room
-          })
-        })
+          });
+        });
 
         socket.on('message', (code) => {
           this.setState({
             code: code.value,
             room: code.room
-          })
-        })
+          });
+        });
     }
-
 
     componentDidMount() {
         this.props.compileCode(this.state.code);
