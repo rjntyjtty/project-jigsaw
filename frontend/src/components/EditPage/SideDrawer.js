@@ -19,7 +19,7 @@ import axios from 'axios';
 import generateRandom from 'sillyname';
 
 import socketIOClient from 'socket.io-client';
-const socket = socketIOClient('http://localhost:5000');
+const socket = socketIOClient('http://localhost:50001');
 
 require('./SideDrawer.css');
 
@@ -67,7 +67,7 @@ class SideDrawer extends React.Component {
 
   componentDidMount() {
     axios
-        .get('http://localhost:3000/api/currrent_user/')
+        .get('http://localhost:30001/api/currrent_user/')
         .then(res => {
           try {
             this.setState({current_user: res.data[0].firstName})

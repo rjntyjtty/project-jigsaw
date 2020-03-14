@@ -118,7 +118,7 @@ class NavAppBar extends React.Component {
   };
   handleSignOut = () => {
     axios
-        .get('http://localhost:3000/api/signout/')
+        .get('http://localhost:30001/api/signout/')
         .then(res => {
           window.location.href="/";
         });
@@ -186,7 +186,7 @@ class NavAppBar extends React.Component {
 
   componentDidMount() {
     axios
-        .get('http://localhost:3000/api/currrent_user/')
+        .get('http://localhost:30001/api/currrent_user/')
         .then(res => {
           try {
             this.setState({current_user: res.data[0].firstName})

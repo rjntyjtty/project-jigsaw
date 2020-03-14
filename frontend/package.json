@@ -21,7 +21,7 @@
     "socket.io-client": "^2.3.0",
     "yarn": "^1.22.0"
   },
-  "proxy": "http://localhost:50000",
+  "proxy": "http://localhost:50001",
   "scripts": {
     "start": "react-scripts start",
     "start:dev": "react-scripts start",

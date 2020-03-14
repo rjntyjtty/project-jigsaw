@@ -71,7 +71,7 @@ class SignInSide extends React.Component {
         const user = { email: this.email.value, password: this.password.value }
 
         axios
-            .post('http://localhost:3000/api/signin/', user)
+            .post('http://localhost:30001/api/signin/', user)
             .then(() => window.location.href = '/')
             .catch(err => {
                 console.error(err);  // TODO: change this to be user-friendly error

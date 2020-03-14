@@ -66,13 +66,13 @@ class SignUp extends React.Component {
         const new_user = { email: this.email.value, password: this.password.value, firstname: this.firstname.value, lastname: this.lastname.value }
 
         axios
-            .post('http://localhost:3000/api/signup/', new_user)
+            .post('http://localhost:30001/api/signup/', new_user)
             .then(() => window.location.href = '/')
             .catch(err => {
                 console.error(err);  // TODO: change this to be user-friendly error
             });
     };
-    
+
 
     render() {
         return (
