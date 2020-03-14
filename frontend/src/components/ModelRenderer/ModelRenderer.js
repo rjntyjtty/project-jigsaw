@@ -1,5 +1,4 @@
 import React from 'react';
-import * as BABYLON from 'babylonjs';
 import {connect} from 'react-redux';
 import playground from './playground';
 
@@ -17,7 +16,7 @@ class ModelRenderer extends React.Component {
     // Render model
     render () {
         return (
-            <iframe className='split right' ref='renderFrame' srcDoc={playground(this.props.code)}></iframe>
+            <iframe className='split right' title='model-frame' ref='renderFrame' srcDoc={playground(this.props.code)}></iframe>
         )
     }
 }
