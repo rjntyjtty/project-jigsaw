@@ -2,7 +2,7 @@ import React from 'react';
 import CodeEditor from '../CodeEditor/CodeEditor'
 import ModelRenderer from '../ModelRenderer/ModelRenderer';
 import { connect } from 'react-redux';
-import SideDrawer from './SideDrawer';
+import SideDrawer from '../SideDrawer/SideDrawer';
 import NavAppBar from '../NavBar/NavAppBar';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
