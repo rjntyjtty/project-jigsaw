@@ -19,6 +19,8 @@ app.get('/api/getList', (req,res) => {
     console.log('Sent list of items');
 });
 
+const PORT = process.env.PORT || 50001;
+
 io.sockets.on('connection', (socket) => {
     console.log('user connected')
 
@@ -29,15 +31,15 @@ io.sockets.on('connection', (socket) => {
         socket.join(fixedRoom)
         io.in(fixedRoom).emit('room', fixedRoom)
 
-    })
+    });
 
     socket.on('message', (message) => {
         io.in(message.room).emit('message',{room:message.room, value:message.newValue})
-    })
+    });
 
     socket.on('chat message', (msg) => {
         io.in(msg.room).emit('chat message',{room:msg.room, value:msg.chat})
-    })
+    });
 
     // socket.on('toolbar', (settings) => {
     //     console.log('settngs', settings)
@@ -49,9 +51,9 @@ io.sockets.on('connection', (socket) => {
     });
 })
 
-server.listen(5000);
+server.listen(PORT);
 
-console.log('App is listening on port ' + 5000);
+console.log('App is listening on port ' + PORT);
 
 
 // **************************************************************************************

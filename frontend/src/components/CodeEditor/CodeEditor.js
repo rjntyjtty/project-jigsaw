@@ -12,7 +12,8 @@ import starterCode from './starterCode';
 
 require('./CodeEditor.css')
 
-const socket = socketIOClient('http://localhost:5000');
+// TODO: needs to come from env vars
+const socket = socketIOClient('http://localhost:50001');
 
 class CodeEditor extends React.Component {
 

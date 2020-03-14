@@ -4,11 +4,9 @@ WORKDIR /jigsaw
 
 ENV PATH /jigsaw/node_modules/.bin:$PATH
 
-COPY package.json /package.json
-COPY yarn.lock /yarn.lock
+COPY package.json /jigsaw/package.json
+COPY yarn.lock /jigsaw/yarn.lock
 
-RUN yarn 
-RUN yarn start
-
+RUN yarn
 
 CMD ["yarn", "start"]
