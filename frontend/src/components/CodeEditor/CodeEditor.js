@@ -62,7 +62,7 @@ class CodeEditor extends React.Component {
     // Render editor
     render () {
         return (
-        <div className="split left">
+        <div className="split">
             <AceEditor
                 mode="javascript"
                 theme="dracula"
