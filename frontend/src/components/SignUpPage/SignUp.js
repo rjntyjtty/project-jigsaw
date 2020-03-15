@@ -66,8 +66,16 @@ class SignUp extends React.Component {
 
         userRequests
             .signup(new_user)
-            .then(() => window.location.href = '/')
+            .then((res) => {
+                if (res.status != 200) {
+                    console.log("error on signin b/c fake account");
+                } else {
+                    window.location.href = '/';
+                }
+
+            })
             .catch(err => {
+                console.log("error on signin b/c fake account");
                 console.error(err);  // TODO: change this to be user-friendly error
             });
     };

@@ -21,7 +21,7 @@ let userRequests = {
         }
         catch (error) {
             console.error(error);
-            return error
+            return error.response;
         }
     },
     signout: async function () {
@@ -36,7 +36,7 @@ let userRequests = {
     },
     getCurrUser: async function () {
         try {
-            const response = await axios.get('/api/currrent_user')
+            const response = await axios.get('/api/current_user')
             return response
         }
         catch (error) {
