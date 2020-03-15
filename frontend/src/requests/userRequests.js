@@ -4,9 +4,39 @@ const axios = require('axios')
 
 let userRequests = {
 
-    putUser: async function (requestBody) {
+    signup: async function (new_user) {
         try {
-            const response = await axios.post('/api/v1/addUser', requestBody)
+            const response = await axios.post('/api/signup', new_user)
+            return response
+        }
+        catch (error) {
+            console.error(error);
+            return error
+        }
+    },
+    signin: async function (user) {
+        try {
+            const response = await axios.post('/api/signin', user)
+            return response
+        }
+        catch (error) {
+            console.error(error);
+            return error
+        }
+    },
+    signout: async function () {
+        try {
+            const response = await axios.get('/api/signout')
+            return response
+        }
+        catch (error) {
+            console.error(error);
+            return error
+        }
+    },
+    getCurrUser: async function () {
+        try {
+            const response = await axios.get('/api/currrent_user')
             return response
         }
         catch (error) {

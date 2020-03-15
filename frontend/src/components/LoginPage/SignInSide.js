@@ -13,9 +13,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
-import axios from 'axios';
+import userRequests from '../../requests/userRequests'
 
-//const axios = require('axios');  // already have import, which I prefer for neatness, but Thierry uses const so idk if this is considered better
 
 const useStyles = theme => ({
   root: {
@@ -70,8 +69,8 @@ class SignInSide extends React.Component {
         e.preventDefault();
         const user = { email: this.email.value, password: this.password.value }
 
-        axios
-            .post('http://localhost:30001/api/signin/', user)
+        userRequests
+            .signin(user)
             .then(() => window.location.href = '/')
             .catch(err => {
                 console.error(err);  // TODO: change this to be user-friendly error
@@ -133,7 +132,6 @@ class SignInSide extends React.Component {
                                 variant="contained"
                                 color="primary"
                                 className={this.props.classes.submit}
-                                //onClick="location.href='/main'"
                                 onClick={this.handleSignIn}
                             >
                                 Sign In

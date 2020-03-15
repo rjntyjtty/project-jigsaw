@@ -12,9 +12,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import axios from 'axios';
+import userRequests from '../../requests/userRequests'
 
-//const axios = require('axios');
 
 function Credits() {
   return (
@@ -65,8 +64,8 @@ class SignUp extends React.Component {
         e.preventDefault();
         const new_user = { email: this.email.value, password: this.password.value, firstname: this.firstname.value, lastname: this.lastname.value }
 
-        axios
-            .post('http://localhost:30001/api/signup/', new_user)
+        userRequests
+            .signup(new_user)
             .then(() => window.location.href = '/')
             .catch(err => {
                 console.error(err);  // TODO: change this to be user-friendly error

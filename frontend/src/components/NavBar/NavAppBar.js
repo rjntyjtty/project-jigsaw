@@ -21,7 +21,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import ChatIcon from '@material-ui/icons/Chat';
 import { mainListItems, secondaryListItems } from '../DashboardPage/listItems';
 import { Button, withStyles } from '@material-ui/core';
-import axios from 'axios';
+import userRequests from '../../requests/userRequests'
 
 const drawerWidth = 240;
 
@@ -117,8 +117,8 @@ class NavAppBar extends React.Component {
     this.setState({ open: false });
   };
   handleSignOut = () => {
-    axios
-        .get('http://localhost:30001/api/signout/')
+    userRequests
+        .signout()
         .then(res => {
           window.location.href="/";
         });
@@ -185,8 +185,8 @@ class NavAppBar extends React.Component {
   }
 
   componentDidMount() {
-    axios
-        .get('http://localhost:30001/api/currrent_user/')
+    userRequests
+        .getCurrUser()
         .then(res => {
           try {
             this.setState({current_user: res.data[0].firstName})

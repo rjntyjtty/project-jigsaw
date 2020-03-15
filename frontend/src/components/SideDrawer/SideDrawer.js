@@ -15,7 +15,7 @@ import ChatIcon from '@material-ui/icons/Chat';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import axios from 'axios';
+import userRequests from '../../requests/userRequests'
 import generateRandom from 'sillyname';
 
 import socketIOClient from 'socket.io-client';
@@ -65,11 +65,11 @@ class SideDrawer extends React.Component {
   }
 
   componentDidMount() {
-    axios
-        .get('http://localhost:30001/api/currrent_user/')
+    userRequests
+        .getCurrUser()
         .then(res => {
           try {
-            this.setState({current_user: res.data[0].firstName})
+            this.setState({current_user: res.data[0].firstName + " " + res.data[0].lastName})
           } catch {
             this.setState({current_user: "Anonymous " + generateRandom()})
           }
