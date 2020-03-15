@@ -4,8 +4,6 @@ import ModelRenderer from '../ModelRenderer/ModelRenderer';
 import { connect } from 'react-redux';
 import SideDrawer from '../SideDrawer/SideDrawer';
 import NavAppBar from '../NavBar/NavAppBar';
-import Container from '@material-ui/core/Container';
-import CssBaseline from '@material-ui/core/CssBaseline';
 require('./EditPage.css')
 
 class EditPage extends React.Component {
@@ -20,7 +18,6 @@ class EditPage extends React.Component {
   };
 
     render() {
-        const { mobileOpen, sideDrawerOpen } = this.state;
         return (
             <div className='edit-page'>
                 <NavAppBar name="Edit" hasChat="true" onOpen={this.openDrawer} />

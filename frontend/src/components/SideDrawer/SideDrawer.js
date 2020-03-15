@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import {
   Drawer,
   IconButton,
@@ -7,14 +6,9 @@ import {
   Divider,
   Typography,
   Box,
-  List,
   withStyles
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import ChatIcon from '@material-ui/icons/Chat';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import socketIOClient from 'socket.io-client';
 import userRequests from '../../requests/userRequests'
 import generateRandom from 'sillyname';

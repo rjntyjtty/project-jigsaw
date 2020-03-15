@@ -1,8 +1,9 @@
 import React from 'react';
-import { Switch, Route, withRouter } from 'react-router-dom';
+//import { Switch, Route, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import Dashboard from '../../components/DashboardPage/Dashboard';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
+//import Box from '@material-ui/core/Box';
+//import Typography from '@material-ui/core/Typography';
 //import Navbar from '../../components/NavBar/';
 //import LoginManager from '../../components/core/LoginManager/';
 //import Home from './Home';
