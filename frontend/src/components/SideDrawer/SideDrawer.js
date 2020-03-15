@@ -87,7 +87,6 @@ class SideDrawer extends React.Component {
 
   render() {
     const history = this.state.messages;
-    const messageColor = this.state.color;
     const chatHistory = history.map( (msg, key) => {
       return (
           <li id="message" key={key}>
