@@ -15,10 +15,11 @@ import ChatIcon from '@material-ui/icons/Chat';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import socketIOClient from 'socket.io-client';
 import userRequests from '../../requests/userRequests'
 import generateRandom from 'sillyname';
+var randomColor = require('randomcolor');
 
-import socketIOClient from 'socket.io-client';
 const socket = socketIOClient('http://localhost:50001');
 
 require('./SideDrawer.css');
@@ -39,7 +40,8 @@ class SideDrawer extends React.Component {
           value:'',
           room:'',
           messages: [],
-          current_user: ''
+          current_user: '',
+          color: ''
       }
 
       this.handleChange = this.handleChange.bind(this);
@@ -73,6 +75,7 @@ class SideDrawer extends React.Component {
           } catch {
             this.setState({current_user: "Anonymous " + generateRandom()})
           }
+          this.setState({color: randomColor()})
         });
   }
 
@@ -90,10 +93,11 @@ class SideDrawer extends React.Component {
 
   render() {
     const history = this.state.messages;
+    const messageColor = this.state.color;
     const chatHistory = history.map( (msg, key) => {
       return (
           <li id="message" key={key}>
-            <div id="message" key={key}>{msg.user}:</div>
+            <div className="username" id="message" style={{color: messageColor}} key={key}>{msg.user}:</div>
             {msg.value}
           </li>
       );
