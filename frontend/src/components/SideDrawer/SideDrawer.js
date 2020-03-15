@@ -53,7 +53,7 @@ class SideDrawer extends React.Component {
 
       socket.on('chat message', (msg) => {
         this.setState({
-          messages: [...this.state.messages, {user: msg.user, value: msg.value}],
+          messages: [...this.state.messages, {user: msg.user, value: msg.value, color: msg.color}],
           room: msg.room
         })
         //window.scrollTo(0, document.body.scrollHeight);
@@ -78,7 +78,7 @@ class SideDrawer extends React.Component {
   }
 
   handleSubmit(event) {
-    socket.emit('chat message', {value: this.state.value, room: this.state.room, user: this.state.current_user});
+    socket.emit('chat message', {value: this.state.value, room: this.state.room, user: this.state.current_user, color: this.state.color});
     event.preventDefault();
     this.setState({
       value: ''
@@ -91,7 +91,7 @@ class SideDrawer extends React.Component {
     const chatHistory = history.map( (msg, key) => {
       return (
           <li id="message" key={key}>
-            <div className="username" id="message" style={{color: messageColor}} key={key}>{msg.user}:</div>
+            <div className="username" id="message" style={{color: msg.color}} key={key}>{msg.user}:</div>
             {msg.value}
           </li>
       );

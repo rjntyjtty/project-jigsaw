@@ -38,7 +38,7 @@ io.sockets.on('connection', (socket) => {
     });
 
     socket.on('chat message', (msg) => {
-        io.in(msg.room).emit('chat message',{room:msg.room, value:msg.value, user:msg.user})
+        io.in(msg.room).emit('chat message',{room:msg.room, value:msg.value, user:msg.user, color:msg.color})
     })
 
     // socket.on('toolbar', (settings) => {
