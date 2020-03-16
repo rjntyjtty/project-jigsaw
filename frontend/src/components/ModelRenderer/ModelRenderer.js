@@ -22,8 +22,8 @@ class ModelRenderer extends React.Component {
 }
 
 const mapStateToProps = state => {
-    console.log('mapping state to props');
-    console.log(state.code);
+    //console.log('mapping state to props');
+    //console.log(state.code);
     return {code: state.code, debug: state.debug}
 };
 
