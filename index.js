@@ -12,21 +12,15 @@ app.use(bodyParser.json());
 // Serve the static files from the React app
 app.use(express.static(path.join(__dirname, 'frontend/build')));
 
-// An api endpoint that returns a short list of items
-app.get('/api/getList', (req,res) => {
-    var list = ["item1", "item2", "item3"];
-    res.json(list);
-    console.log('Sent list of items');
-});
 
 const PORT = process.env.PORT || 50001;
 
 io.sockets.on('connection', (socket) => {
-    console.log('user connected')
+    //console.log('user connected')
 
     socket.on('join', (room) => {
         //room name is just the pathname, split and joined to remove forward slash
-        console.log(room);
+        //console.log(room);
         let fixedRoom = room.split('/').pop()
         socket.join(fixedRoom)
         io.in(fixedRoom).emit('room', fixedRoom)
@@ -47,7 +41,7 @@ io.sockets.on('connection', (socket) => {
     // })
 
     socket.on('disconnect', () => {
-        console.log('user disconnected');
+        //console.log('user disconnected');
     });
 })
 
@@ -90,7 +84,7 @@ app.post('/api/signup/', function (req, res, next) {
     let password = req.body.password;
     let firstName = req.body.firstname;
     let lastName = req.body.lastname;
-    console.log(req.body);
+    //console.log(req.body);
 
     users.findOne({ _id: email }, function (err, user) {
         if (err) return res.status(500).end(err);
@@ -160,7 +154,7 @@ app.get('/api/users/', function (req, res, next) {
 
 
 app.get('/api/currrent_user/', function (req, res, next) {
-    console.log("Current User", req.session.email);
+    //console.log("Current User", req.session.email);
     users.find({ _id: req.session.email }, function (err, curr_user) {
         if (err) return res.status(500).end(err);
         if (!curr_user) return res.status(404).end("Currently signed out");

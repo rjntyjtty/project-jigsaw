@@ -184,7 +184,7 @@ class NavAppBar extends React.Component {
           try {
             this.setState({current_user: res.data[0].firstName})
           } catch {
-            console.log(res.data);
+            //console.log(res.data);
           }
           //console.log(res.data[0].firstName);
         });
