@@ -22,7 +22,7 @@ function playground(createScene, debug) {
                 margin  : 0;
                 padding : 0;
             }
-    
+
             #renderCanvas {
                 width   : 100%;
                 height  : 100%;
@@ -37,23 +37,23 @@ function playground(createScene, debug) {
             window.addEventListener('DOMContentLoaded', function(){
                 // get the canvas DOM element
                 var canvas = document.getElementById('renderCanvas');
-    
+
                 // load the 3D engine
                 var engine = new BABYLON.Engine(canvas, true);
-    
+
                 // createScene function that creates and return the scene
                 ${createScene}
-    
+
                 // call the createScene function
                 var scene = createScene();
-    
+
                 ${debugCode}
 
                 // run the render loop
                 engine.runRenderLoop(function(){
                     scene.render();
                 });
-    
+
                 // the canvas/window resize event handler
                 window.addEventListener('resize', function(){
                     engine.resize();
@@ -61,6 +61,9 @@ function playground(createScene, debug) {
 
                 // Initialize GizmoManager
                 var gizmoManager = new BABYLON.GizmoManager(scene)
+
+                // Initialize gizmo
+                gizmoManager.positionGizmoEnabled = true;
 
                 // Modify gizmos based on keypress
                 document.onkeydown = (e)=>{
@@ -86,6 +89,12 @@ function playground(createScene, debug) {
                     if(e.key == 'y'){
                         // hide the gizmo
                         gizmoManager.attachToMesh(null);
+                    }
+                    if(e.key == 't'){
+                      // Toggle local/global gizmo rotation positioning
+                      scene.debugLayer.show({
+                        embedMode:true
+                      });
                     }
                     if(e.key == 's'){
                         // Toggle distance snapping
@@ -114,8 +123,8 @@ function playground(createScene, debug) {
                 }
             });
 
-            
-            
+
+
         </script>
     </body>
     </html>`
