@@ -12,6 +12,8 @@ import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChatIcon from '@material-ui/icons/Chat';
+import ShareIcon from '@material-ui/icons/Share';
+import SaveIcon from '@material-ui/icons/Save';
 import { mainListItems, secondaryListItems } from '../DashboardPage/listItems';
 import { Button, withStyles } from '@material-ui/core';
 import userRequests from '../../requests/userRequests'
@@ -118,7 +120,7 @@ class NavAppBar extends React.Component {
   }
 
   messageButton() {
-    if (this.props.hasChat === "true") {
+    if (this.props.isEdit === "true") {
       return (
         <IconButton
         color="inherit"
@@ -128,6 +130,32 @@ class NavAppBar extends React.Component {
           <Badge badgeContent={"!"} color="secondary">
             <ChatIcon />
           </Badge>
+        </IconButton>
+      );
+    }
+  }
+
+  shareButton() {
+    if (this.props.isEdit === "true") {
+      return (
+        <IconButton
+        color="inherit"
+        onClick={console.log("temp")}
+        >
+          <ShareIcon />
+        </IconButton>
+      );
+    }
+  }
+
+  saveButton() {
+    if (this.props.isEdit === "true") {
+      return (
+        <IconButton
+        color="inherit"
+        onClick={console.log("temp")}
+        >
+          <SaveIcon />
         </IconButton>
       );
     }
@@ -210,6 +238,8 @@ class NavAppBar extends React.Component {
               {this.props.name}
             </Typography>
             {this.username()}
+            {this.saveButton()}
+            {this.shareButton()}
             {this.messageButton()}
             {this.loginLogoutButton()}
           </Toolbar>
