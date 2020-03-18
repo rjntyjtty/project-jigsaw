@@ -211,39 +211,36 @@ app.get('/api/current_user/', function (req, res, next) {  // get currently logg
 // ************************************* PROJECTS ***************************************
 // **************************************************************************************
 
-app.post('/api/projects/', function (req, res, next) {  // create new project
-    let permalink = red.body.permalink;
-    let user_email = req.body.user;
+app.post('/api/projects/', isAuthenticated, function (req, res, next) {  // save new project; anons can't save projects
+    let permalink = req.body.permalink;  // could've just let mongo generate unique ids, but in case user wants to make custom url (that isn't taken)
     let title = req.body.title;
     let code = req.body.code;
-
+    let user = req.session.email;
+    
     MongoClient.connect(url, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
         let dbo = db.db("mydb");
 
-        dbo.collection("projects").find({ _id: permalink }).toArray(function (err, projects) {
-            if (err) return res.status(500).end(err);
-            let project = projects[0];
-            if (project) return res.status(409).end("A project already exists at: " + permalink);
-
-            // note we are given only a singular user who started the project, but put it in a list in anticipation for future users
-            let new_project = { _id: permalink, users: [user], title: title, code: code, anons: [] };
-            dbo.collection("projects").insertOne(new_project, function (err, res) {
+        // if not given custom permalink, mongo will automatically generate a unique one
+        let new_project = { users: [user], title: title, code: code, anons: [], bookmarks: [], public: false };
+        if (permalink) {
+            dbo.collection("projects").find({ _id: permalink }).toArray(function (err, projects) {  // check permalink is available
                 if (err) return res.status(500).end(err);
-
-                dbo.collection("users").find({ _id: user_email }).toArray(function (err, users) {  // check that it's a real user account; rn, anons can't start projects
-                    if (err) return res.status(500).end(err);
-                    let user = users[0];
-                    if (!user) return res.status(409).end("An account does not exist with email: " + user_email);
-                });
-
-                db.close();
-                return res.json("New project " + title + " created at " + permalink);
+                let project = projects[0];
+                if (project) return res.status(409).end("A project already exists at: " + permalink);
+                // note we are given only a singular user who started the project, but put it in a list in anticipation for future users
+                new_project = { _id: permalink, users: [user], title: title, code: code, anons: [], bookmarks: [], public: false };
             });
-        });       
+        }
+        dbo.collection("projects").insertOne(new_project, function (err, res) {
+            if (err) return res.status(500).end(err);
+            db.close();
+            return res.json(new_project);
+        });   
     });
 });
 
+// should change to admin permission only? maybe?
 app.get('/api/projects/', function (req, res, next) {  // get all projects
     MongoClient.connect(url, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
@@ -257,7 +254,7 @@ app.get('/api/projects/', function (req, res, next) {  // get all projects
     });
 });
 
-app.get('/api/projects/:id/', function (req, res, next) {  // get project with given permalink
+app.get('/api/projects/:id/permalink/', function (req, res, next) {  // get the project with given permalink
     MongoClient.connect(url, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
         let dbo = db.db("mydb");
@@ -265,14 +262,14 @@ app.get('/api/projects/:id/', function (req, res, next) {  // get project with g
         dbo.collection("projects").find({_id: req.params.id}).toArray(function (err, projects) {
             if (err) return res.status(500).end(err);
             let project = projects[0];
-            if (!project) return res.status(404).end("Comment id: " + req.params.id + " does not exist");
+            if (!project || (!project.public && !project.users.includes(req.session.user) )) return res.status(404).end("Project does not exist at: " + req.params.id);
             db.close();
-            return res.json(projects);
+            return res.json(project);
         });
     });
 });
 
-app.get('/api/projects/:user_email/', function (req, res, next) {  // get projects of a given user
+app.get('/api/projects/:id/user/', function (req, res, next) {  // get projects of a given user
     MongoClient.connect(url, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
         let dbo = db.db("mydb");
@@ -280,10 +277,14 @@ app.get('/api/projects/:user_email/', function (req, res, next) {  // get projec
         dbo.collection("users").find({ _id: req.params.id }).toArray(function (err, users) {
             if (err) return res.status(500).end(err);
             let user = users[0];
-            if (!user) return res.status(409).end("An account does not exist with email: " + req.params.id);
+            if (!user) return res.status(409).end("Account does not exist or does not contain any public projects: " + req.params.id);
 
-            dbo.collection("projects").find({ users: req.params.user_email }).toArray(function (err, projects) {
+            dbo.collection("projects").find({ users: req.params.id }).toArray(function (err, projects) {
                 if (err) return res.status(500).end(err);
+
+                // if viewing another user's work, can only view public ones or ones where current user is a whitelisted collaborator
+                projects = projects.filter(each => each.users.includes(req.session.email) || each.public);
+
                 db.close();
                 return res.json(projects);
             });
@@ -294,10 +295,13 @@ app.get('/api/projects/:user_email/', function (req, res, next) {  // get projec
 // add a new user as a collaborator to update code - considering separating user and code, since code will happen much more frequently?
 // also thinking about refactoring so that we only pass in new users, and this function will append them to an existing list
 app.patch('/api/projects/', function (req, res, next) {
-    let permalink = red.body.permalink;
+    let permalink = req.body.permalink;
     let users = req.body.users;   // do we need to check if each user is actually a real account?
     let code = req.body.code;
     let anons = req.body.anons;
+    let bookmarks = req.body.bookmarks;
+
+    if (users.includes(req.session.))
 
     MongoClient.connect(url, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
@@ -308,13 +312,33 @@ app.patch('/api/projects/', function (req, res, next) {
             let project = projects[0];
             if (!project) return res.status(409).end("No project exists at: " + permalink);
 
-            let updated_project = { $set: { users: users, anons: anons, code: code } };
+            let updated_project = { $set: { users: users, anons: anons, code: code, bookmarks: bookmarks } };
             dbo.collection("projects").updateOne({ _id: permalink }, updated_project, function (err, res) {
                 if (err) return res.status(500).end(err);
 
                 db.close();
                 return res.json("Project " + title + " at " + permalink + " updated");
             });
+        });
+    });
+});
+
+app.delete('/api/projects/:user/', function (req, res, next) {  // user removes self as collaborator
+    let permalink = req.body.permalink;
+    let user = req.body.user;
+    if (user !== req.session.email) return res.status(403).end("forbidden: whitelisted users may only remove themselves");
+
+    MongoClient.connect(url, function (err, db) {
+        if (err) return res.status(500).end(err);  // failed to connect to mongoDB
+        let dbo = db.db("mydb");
+
+        dbo.collection("projects").find({ _id: permalink }).toArray(function (err, projects) {
+            if (err) return res.status(500).end(err);
+            let project = projects[0];
+            if (!project) return res.status(409).end("No project exists at: " + permalink);
+
+            db.close();
+            return res.json("removed " + user + " from project at " + permalink);
         });
     });
 });
