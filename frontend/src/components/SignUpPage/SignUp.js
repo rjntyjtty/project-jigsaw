@@ -66,7 +66,14 @@ class SignUp extends React.Component {
 
         userRequests
             .signup(new_user)
-            .then(() => window.location.href = '/')
+            .then((res) => {
+                if (res.status !== 200) {
+                    console.log("error, user already exists");
+                } else {
+                    window.location.href = '/';
+                }
+
+            })
             .catch(err => {
                 console.error(err);  // TODO: change this to be user-friendly error
             });
