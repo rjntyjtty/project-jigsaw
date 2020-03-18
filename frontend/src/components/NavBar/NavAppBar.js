@@ -14,6 +14,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChatIcon from '@material-ui/icons/Chat';
 import ShareIcon from '@material-ui/icons/Share';
 import SaveIcon from '@material-ui/icons/Save';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
 import { mainListItems, secondaryListItems } from '../DashboardPage/listItems';
 import { Button, withStyles } from '@material-ui/core';
 import userRequests from '../../requests/userRequests'
@@ -161,6 +162,20 @@ class NavAppBar extends React.Component {
     }
   }
 
+  bookmarkButton() {
+    if (this.props.isEdit === "true") {
+      return (
+        <IconButton
+        color="inherit"
+        onClick={console.log("temp")}
+        >
+          <BookmarkIcon />
+        </IconButton>
+      );
+    }
+  }
+
+
   loginLogoutButton() {
     if (this.state.current_user === "") {
       return (
@@ -237,10 +252,11 @@ class NavAppBar extends React.Component {
             <Typography component="h1" variant="h6" color="inherit" noWrap className={this.props.classes.title}>
               {this.props.name}
             </Typography>
-            {this.username()}
+            {this.bookmarkButton()}
             {this.saveButton()}
             {this.shareButton()}
             {this.messageButton()}
+            {this.username()}
             {this.loginLogoutButton()}
           </Toolbar>
         </AppBar>

@@ -20,7 +20,7 @@ class EditPage extends React.Component {
     render() {
         return (
             <div className='edit-page'>
-                <NavAppBar name="Edit" isEdit="true" onOpen={this.openDrawer} />
+                <NavAppBar name="Edit" hasChat="true" onOpen={this.openDrawer} />
                 <main>
                   <CodeEditor />
                   <ModelRenderer />
