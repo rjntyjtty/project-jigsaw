@@ -14,7 +14,7 @@ require('./CodeEditor.css')
 
 let HOST = process.env.HOST || "localhost";
 let PORT = process.env.PORT || 50001;
-let link = "http://" + HOST + ":" + PORT;
+let link = window.location.protocol + "//" + HOST + ":" + PORT;
 
 const socket = socketIOClient(link);
 
