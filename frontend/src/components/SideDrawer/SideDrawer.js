@@ -14,7 +14,11 @@ import userRequests from '../../requests/userRequests'
 import generateRandom from 'sillyname';
 var randomColor = require('randomcolor');
 
-const socket = socketIOClient('http://localhost:50001');
+let HOST = process.env.HOST || "localhost";
+let PORT = process.env.PORT || 50001;
+let link = "http://" + HOST + ":" + PORT;
+
+const socket = socketIOClient(link);
 
 require('./SideDrawer.css');
 

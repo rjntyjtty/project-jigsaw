@@ -1,4 +1,3 @@
-import cookieManager from '../cookieManager'
 
 const axios = require('axios')
 
