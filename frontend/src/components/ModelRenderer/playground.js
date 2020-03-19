@@ -58,10 +58,6 @@ function playground(createScene) {
                 // call the createScene function
                 var scene = createScene();
 
-                scene.debugLayer.show({
-                    embedMode:true
-                });
-
                 document.querySelector('#showDebug').addEventListener('click', function() {
                     scene.debugLayer.show({
                         embedMode:true
