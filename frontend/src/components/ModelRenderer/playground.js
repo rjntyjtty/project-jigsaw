@@ -1,11 +1,4 @@
-function playground(createScene, debug) {
-    let debugCode = ``;
-    if (debug) {
-        debugCode = `
-        scene.debugLayer.show({
-            embedMode:true
-        });`
-    }
+function playground(createScene) {
     return `
     <!DOCTYPE html>
     <html>
@@ -14,6 +7,10 @@ function playground(createScene, debug) {
         <title>Babylon - Getting Started</title>
         <!--- Link to the last version of BabylonJS --->
         <script src="https://cdn.babylonjs.com/babylon.js"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <style>
             html, body {
                 overflow: hidden;
@@ -21,6 +18,17 @@ function playground(createScene, debug) {
                 height  : 100%;
                 margin  : 0;
                 padding : 0;
+                position: relative;
+            }
+
+            #showDebug {
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 1;
+                border-color: #3f51b5;
+                background-color: #3f51b5;
+                margin: 1px;
             }
 
             #renderCanvas {
@@ -28,12 +36,15 @@ function playground(createScene, debug) {
                 height  : 100%;
                 touch-action: none;
             }
+
         </style>
     </head>
     <body>
+        <button class="btn btn-primary" id="showDebug">Show debug panel</button>
         <canvas id="renderCanvas"></canvas>
         <script>
             "use strict";
+
             window.addEventListener('DOMContentLoaded', function(){
                 // get the canvas DOM element
                 var canvas = document.getElementById('renderCanvas');
@@ -47,7 +58,15 @@ function playground(createScene, debug) {
                 // call the createScene function
                 var scene = createScene();
 
-                ${debugCode}
+                scene.debugLayer.show({
+                    embedMode:true
+                });
+
+                document.querySelector('#showDebug').addEventListener('click', function() {
+                    scene.debugLayer.show({
+                        embedMode:true
+                    });
+                });
 
                 // run the render loop
                 engine.runRenderLoop(function(){
@@ -122,8 +141,6 @@ function playground(createScene, debug) {
                     }
                 }
             });
-
-
 
         </script>
     </body>
