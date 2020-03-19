@@ -2,7 +2,7 @@ import React from 'react';
 import AceEditor from "react-ace";
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
-import compileCode from '../../store/actions';
+import { compileCode } from '../../store/actions';
 import socketIOClient from 'socket.io-client';
 import generateRandom from 'sillyname';
 
@@ -65,7 +65,7 @@ class CodeEditor extends React.Component {
     // Render editor
     render () {
         return (
-        <div className="split">
+        <div className="split left">
             <AceEditor
                 mode="javascript"
                 theme="dracula"
@@ -76,7 +76,7 @@ class CodeEditor extends React.Component {
                 width="100%"
                 height="100%"
             />
-            <Button className="compile-button" variant="contained" color="primary" onClick={()=> {this.props.compileCode(this.state.code)}}>Compile</Button>
+            <Button className="compile-button" variant="contained" color="primary" onClick={() => {this.props.compileCode(this.state.code)}}>Compile</Button>
         </div>
     )}
 }

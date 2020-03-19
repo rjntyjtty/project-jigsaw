@@ -16,7 +16,7 @@ class ModelRenderer extends React.Component {
     // Render model
     render () {
         return (
-            <iframe className='split right' title='model-frame' ref='renderFrame' srcDoc={playground(this.props.code, this.props.debug || true)}></iframe>
+            <iframe className='split right' title='model-frame' ref='renderFrame' srcDoc={playground(this.props.code)}></iframe>
         )
     }
 }
