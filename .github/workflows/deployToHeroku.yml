@@ -30,7 +30,7 @@ jobs:
     - name: Build and push to Heroku
       run: |
         echo $HEROKU_OATH_TOKEN | docker login --username=_ --password-stdin registry.heroku.com
-        heroku container:push web
-        heroku container:release web
+        heroku container:push web -a project-jigsaw
+        heroku container:release web -a project-jigsaw
       env:
         HEROKU_OATH_TOKEN: ${{ secrets.HEROKU_OATH_TOKEN }}
