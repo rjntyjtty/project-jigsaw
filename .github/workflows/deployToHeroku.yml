@@ -30,8 +30,8 @@ jobs:
     - name: Build and push to Heroku
       run: |
         heroku container:login
-        heroku container:push web -a project-jigsaw
-        heroku container:release web -a project-jigsaw
+        heroku container:push web -a project-jigsaw-staging
+        heroku container:release web -a project-jigsaw-staging
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         HEROKU_OATH_TOKEN: ${{ secrets.HEROKU_OATH_TOKEN }}
