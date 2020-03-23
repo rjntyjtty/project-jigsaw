@@ -33,4 +33,5 @@ jobs:
         heroku container:push web -a project-jigsaw
         heroku container:release web -a project-jigsaw
       env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         HEROKU_OATH_TOKEN: ${{ secrets.HEROKU_OATH_TOKEN }}
