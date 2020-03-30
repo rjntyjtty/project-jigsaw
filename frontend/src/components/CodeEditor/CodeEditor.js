@@ -3,7 +3,7 @@ import AceEditor from "react-ace";
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import { compileCode } from '../../store/actions';
-import socketIOClient from 'socket.io-client';
+import io from 'socket.io-client';
 import generateRandom from 'sillyname';
 
 import "ace-builds/src-noconflict/mode-javascript";
@@ -12,11 +12,8 @@ import starterCode from './starterCode';
 
 require('./CodeEditor.css')
 
-let HOST = process.env.HOST || "localhost";
-let PORT = process.env.PORT || 50001;
-let link = window.location.protocol + "//" + HOST + ":" + PORT;
-
-const socket = socketIOClient(link);
+const socket = io();
+socket.on('hello', ({ message }) => alert(message));
 
 class CodeEditor extends React.Component {
 
