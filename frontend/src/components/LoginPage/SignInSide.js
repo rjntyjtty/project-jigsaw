@@ -83,7 +83,7 @@ class SignInSide extends React.Component {
             .signin(user)
             .then((res) => {
                 if (res.status !== 200) {
-                    console.log("error on signin b/c fake account");
+                    //console.log("error on signin b/c fake account");
                     this.setState({open: true});
                 } else {
                     window.location.href = '/';
@@ -112,7 +112,7 @@ class SignInSide extends React.Component {
                         <Typography component="h1" variant="h5">
                             Sign in
                         </Typography>
-                        <SnackBar open={this.state.open} onClose={this.closeSnackBar}/>
+                        <SnackBar open={this.state.open} onClose={this.closeSnackBar} message="Incorrect email or password"/>
                         <form className={this.props.classes.form} noValidate>
                             <TextField
                                 variant="outlined"

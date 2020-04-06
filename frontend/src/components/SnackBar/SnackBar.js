@@ -15,7 +15,7 @@ class SnackBar extends React.Component {
       <div>
         <Snackbar open={this.props.open} autoHideDuration={6000} onClose={this.props.onClose}>
           <Alert onClose={this.props.onClose} severity="error">
-            Username and password do not match!
+            {this.props.message}
           </Alert>
         </Snackbar>
       </div>
