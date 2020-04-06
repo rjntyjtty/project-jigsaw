@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 50001;
 
 io.sockets.on('connection', (socket) => {
     //console.log('user connected')
-    socket.emit('hello', { message: 'hello from server!' })
+    //socket.emit('hello', { message: 'hello from server!' })
 
     socket.on('join', (room) => {
         //room name is just the pathname, split and joined to remove forward slash
