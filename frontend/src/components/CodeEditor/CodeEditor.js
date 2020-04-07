@@ -13,7 +13,6 @@ import starterCode from './starterCode';
 require('./CodeEditor.css')
 
 const socket = io();
-socket.on('hello', ({ message }) => alert(message));
 
 class CodeEditor extends React.Component {
 
