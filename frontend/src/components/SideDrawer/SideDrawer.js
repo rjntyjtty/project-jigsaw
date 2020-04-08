@@ -56,6 +56,7 @@ class SideDrawer extends React.Component {
           messages: [...this.state.messages, {user: msg.user, value: msg.value, color: msg.color}],
           room: msg.room
         })
+        this.props.onNewMessage();
         //window.scrollTo(0, document.body.scrollHeight);
       })
   }

@@ -7,25 +7,29 @@ import NavAppBar from '../NavBar/NavAppBar';
 require('./EditPage.css')
 
 class EditPage extends React.Component {
-  state = { sideDrawerOpen: false };
+  state = { sideDrawerOpen: false, newMessage: false };
 
   closeDrawer = () => {
-    this.setState({ sideDrawerOpen: false });
+    this.setState({ sideDrawerOpen: false, newMessage: false });
   };
 
   openDrawer = () => {
-    this.setState({ sideDrawerOpen: true });
+    this.setState({ sideDrawerOpen: true, newMessage: false });
+  };
+
+  onNewMessage = () => {
+    this.setState({ newMessage: true });
   };
 
     render() {
         return (
             <div className='edit-page'>
-                <NavAppBar name="Edit" isEdit="true" onOpen={this.openDrawer} />
+                <NavAppBar name="Edit" isEdit="true" open={this.state.sideDrawerOpen} onOpen={this.openDrawer} newMessage={this.state.newMessage} />
                 <main>
                   <CodeEditor />
                   <ModelRenderer />
                 </main>
-                <SideDrawer open={this.state.sideDrawerOpen} onClose={this.closeDrawer} />
+                <SideDrawer open={this.state.sideDrawerOpen} onClose={this.closeDrawer} onNewMessage={this.onNewMessage} />
             </div>
         )
     }

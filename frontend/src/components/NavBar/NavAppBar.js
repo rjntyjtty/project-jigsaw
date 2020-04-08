@@ -139,6 +139,21 @@ class NavAppBar extends React.Component {
     this.setState({ message: "Share link copied" });
   }
 
+  badge() {
+    if (this.props.newMessage === true && this.props.open !== true) {
+      return(
+        <Badge badgeContent={"!"} color="secondary">
+          <ChatIcon />
+        </Badge>
+      );
+    } else {
+      return(
+        <ChatIcon />
+      );
+    }
+
+  }
+
   messageButton() {
     if (this.props.isEdit === "true") {
       return (
@@ -148,9 +163,7 @@ class NavAppBar extends React.Component {
           onClick={this.props.onOpen}
           aria-label="Open Sidedrawer"
           >
-            <Badge badgeContent={"!"} color="secondary">
-              <ChatIcon />
-            </Badge>
+          {this.badge()}
           </IconButton>
         </Tooltip>
       );
