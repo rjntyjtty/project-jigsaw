@@ -12,9 +12,16 @@ import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChatIcon from '@material-ui/icons/Chat';
+import ShareIcon from '@material-ui/icons/Share';
+import SaveIcon from '@material-ui/icons/Save';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
 import { mainListItems, secondaryListItems } from '../DashboardPage/listItems';
+import Tooltip from '@material-ui/core/Tooltip';
 import { Button, withStyles } from '@material-ui/core';
 import userRequests from '../../requests/userRequests'
+import SnackBar from '../SnackBar/SnackBar';
+import copy from 'copy-to-clipboard';
+
 
 const drawerWidth = 240;
 
@@ -109,6 +116,15 @@ class NavAppBar extends React.Component {
   handleDrawerClose = () => {
     this.setState({ open: false });
   };
+
+  closeSnackBar = () => {
+    this.setState({ snackOpen: false });
+  };
+
+  openSnackBar = () => {
+    this.setState({ snackOpen: true });
+  };
+
   handleSignOut = () => {
     userRequests
         .signout()
@@ -117,21 +133,88 @@ class NavAppBar extends React.Component {
         });
   }
 
+  getShareLink = () => {
+    copy(window.location.href);
+    this.setState({ snackOpen: true });
+    this.setState({ message: "Share link copied" });
+  }
+
+  badge() {
+    if (this.props.newMessage === true && this.props.open !== true) {
+      return(
+        <Badge badgeContent={"!"} color="secondary">
+          <ChatIcon />
+        </Badge>
+      );
+    } else {
+      return(
+        <ChatIcon />
+      );
+    }
+
+  }
+
   messageButton() {
-    if (this.props.hasChat === "true") {
+    if (this.props.isEdit === "true") {
       return (
-        <IconButton
-        color="inherit"
-        onClick={this.props.onOpen}
-        aria-label="Open Sidedrawer"
-        >
-          <Badge badgeContent={"!"} color="secondary">
-            <ChatIcon />
-          </Badge>
-        </IconButton>
+        <Tooltip title={<span style={{ fontSize: "20px" }}>Messages</span>}>
+          <IconButton
+          color="inherit"
+          onClick={this.props.onOpen}
+          aria-label="Open Sidedrawer"
+          >
+          {this.badge()}
+          </IconButton>
+        </Tooltip>
       );
     }
   }
+
+  shareButton() {
+    if (this.props.isEdit === "true") {
+      return (
+        <Tooltip title={<span style={{ fontSize: "20px" }}>Share</span>}>
+          <IconButton
+          color="inherit"
+          onClick={this.getShareLink}
+          >
+            <ShareIcon />
+          </IconButton>
+        </Tooltip>
+      );
+    }
+  }
+
+  saveButton() {
+    if (this.props.isEdit === "true") {
+      return (
+        <Tooltip title={<span style={{ fontSize: "20px" }}>Save</span>}>
+          <IconButton
+          color="inherit"
+          onClick={console.log("temp")}
+          >
+            <SaveIcon />
+          </IconButton>
+        </Tooltip>
+      );
+    }
+  }
+
+  bookmarkButton() {
+    if (this.props.isEdit === "true") {
+      return (
+        <Tooltip title={<span style={{ fontSize: "20px" }}>Bookmark to sidebar</span>}>
+          <IconButton
+          color="inherit"
+          onClick={console.log("temp")}
+          >
+            <BookmarkIcon />
+          </IconButton>
+        </Tooltip>
+      );
+    }
+  }
+
 
   loginLogoutButton() {
     if (this.state.current_user === "") {
@@ -172,7 +255,9 @@ class NavAppBar extends React.Component {
 
       this.state = {
           open: false,
-          current_user: ""
+          snackOpen: false,
+          current_user: "",
+          message: ""
       }
 
   }
@@ -185,7 +270,7 @@ class NavAppBar extends React.Component {
                 console.log(res.data);
             this.setState({current_user: res.data.firstName})
           } catch {
-            console.log(res.data);
+            //console.log(res.data);
           }
           //console.log(res.data[0].firstName);
         });
@@ -210,11 +295,15 @@ class NavAppBar extends React.Component {
             <Typography component="h1" variant="h6" color="inherit" noWrap className={this.props.classes.title}>
               {this.props.name}
             </Typography>
-            {this.username()}
+            {this.bookmarkButton()}
+            {this.saveButton()}
+            {this.shareButton()}
             {this.messageButton()}
+            {this.username()}
             {this.loginLogoutButton()}
           </Toolbar>
         </AppBar>
+        <SnackBar open={this.state.snackOpen} onClose={this.closeSnackBar} message={this.state.message} severity="success"/>
         <Drawer
           variant="permanent"
           classes={{

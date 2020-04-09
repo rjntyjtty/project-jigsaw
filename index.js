@@ -14,15 +14,17 @@ app.use(bodyParser.json());
 // Serve the static files from the React app
 app.use(express.static(path.join(__dirname, 'frontend/build')));
 
+
 const PORT = process.env.PORT || 50001;
 var url = "mongodb://localhost:/" + PORT + "/";
 
 io.sockets.on('connection', (socket) => {
-    console.log('user connected')
+    //console.log('user connected')
+    //socket.emit('hello', { message: 'hello from server!' })
 
     socket.on('join', (room) => {
         //room name is just the pathname, split and joined to remove forward slash
-        console.log(room);
+        //console.log(room);
         let fixedRoom = room.split('/').pop()
         socket.join(fixedRoom)
         io.in(fixedRoom).emit('room', fixedRoom)
@@ -43,7 +45,7 @@ io.sockets.on('connection', (socket) => {
     // })
 
     socket.on('disconnect', () => {
-        console.log('user disconnected');
+        //console.log('user disconnected');
     });
 })
 

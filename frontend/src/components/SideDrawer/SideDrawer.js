@@ -14,7 +14,7 @@ import userRequests from '../../requests/userRequests'
 import generateRandom from 'sillyname';
 var randomColor = require('randomcolor');
 
-const socket = socketIOClient('http://localhost:50001');
+const socket = socketIOClient();
 
 require('./SideDrawer.css');
 
@@ -56,6 +56,7 @@ class SideDrawer extends React.Component {
           messages: [...this.state.messages, {user: msg.user, value: msg.value, color: msg.color}],
           room: msg.room
         })
+        this.props.onNewMessage();
         //window.scrollTo(0, document.body.scrollHeight);
       })
   }
@@ -89,9 +90,9 @@ class SideDrawer extends React.Component {
     const history = this.state.messages;
     const chatHistory = history.map( (msg, key) => {
       return (
-          <li id="message" key={key}>
+          <li id="message" key={key} style={{maxWidth: "300px"}}>
             <div className="username" id="message" style={{color: msg.color}} key={key}>{msg.user}:</div>
-            {msg.value}
+            <div style={{wordWrap: "break-word"}}>{msg.value}</div>
           </li>
       );
     });

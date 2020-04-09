@@ -16,14 +16,14 @@ class ModelRenderer extends React.Component {
     // Render model
     render () {
         return (
-            <iframe className='split right' title='model-frame' ref='renderFrame' srcDoc={playground(this.props.code, this.props.debug || true)}></iframe>
+            <iframe className='split right' title='model-frame' ref='renderFrame' srcDoc={playground(this.props.code)}></iframe>
         )
     }
 }
 
 const mapStateToProps = state => {
-    console.log('mapping state to props');
-    console.log(state.code);
+    //console.log('mapping state to props');
+    //console.log(state.code);
     return {code: state.code, debug: state.debug}
 };
 

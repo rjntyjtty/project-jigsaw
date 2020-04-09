@@ -11,29 +11,9 @@ services:
             - '../../:/jigsaw'
             - '/jigsaw/node_modules'
         ports:
-            - '50001:50000'
+            - '8080'
         environment: 
             - NODE_ENV=dev
-            - PORT=50001
+            - PORT=8080
         tty: true
         stdin_open: true
-
-    jigsaw-frontend:
-        container_name: jigsaw-frontend
-        build:
-            context: ../../frontend/
-            dockerfile: Dockerfile
-        volumes:
-            - '../../frontend:/jigsaw-frontend'
-            - '/jigsaw-frontend/node_modules'
-        ports:
-            - '30001:30000'
-        environment:
-            - NODE_ENV=dev
-        tty: true
-        stdin_open: true
-
-networks:
-    default:
-        external:
-            name: jigsaw

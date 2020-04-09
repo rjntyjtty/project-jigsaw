@@ -2,8 +2,8 @@ import React from 'react';
 import AceEditor from "react-ace";
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
-import compileCode from '../../store/actions';
-import socketIOClient from 'socket.io-client';
+import { compileCode } from '../../store/actions';
+import io from 'socket.io-client';
 import generateRandom from 'sillyname';
 
 import "ace-builds/src-noconflict/mode-javascript";
@@ -12,8 +12,7 @@ import starterCode from './starterCode';
 
 require('./CodeEditor.css')
 
-// TODO: needs to come from env vars
-const socket = socketIOClient('http://localhost:50001');
+const socket = io();
 
 class CodeEditor extends React.Component {
 
@@ -50,8 +49,8 @@ class CodeEditor extends React.Component {
     }
 
     onChange = (newValue) => {
-      socket.emit('message', {newValue, room: this.state.room})
       this.setState({code: newValue});
+      socket.emit('message', {newValue, room: this.state.room});
     }
 
     // https://github.com/securingsincity/react-ace/issues/181
@@ -62,7 +61,7 @@ class CodeEditor extends React.Component {
     // Render editor
     render () {
         return (
-        <div className="split">
+        <div className="split left">
             <AceEditor
                 mode="javascript"
                 theme="dracula"
@@ -73,7 +72,7 @@ class CodeEditor extends React.Component {
                 width="100%"
                 height="100%"
             />
-            <Button className="compile-button" variant="contained" color="primary" onClick={()=> {this.props.compileCode(this.state.code)}}>Compile</Button>
+            <Button className="compile-button" variant="contained" color="primary" onClick={() => {this.props.compileCode(this.state.code)}}>Compile</Button>
         </div>
     )}
 }
