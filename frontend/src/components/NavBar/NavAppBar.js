@@ -266,8 +266,9 @@ class NavAppBar extends React.Component {
     userRequests
         .getCurrUser()
         .then(res => {
-          try {
-            this.setState({current_user: res.data[0].firstName})
+            try {
+                console.log(res.data);
+            this.setState({current_user: res.data.firstName})
           } catch {
             //console.log(res.data);
           }

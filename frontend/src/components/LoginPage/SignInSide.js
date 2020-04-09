@@ -82,15 +82,14 @@ class SignInSide extends React.Component {
         userRequests
             .signin(user)
             .then((res) => {
-                if (res.status !== 200) {
-                    //console.log("error on signin b/c fake account");
+                if (res.status != 200) {
                     this.setState({open: true});
                 } else {
                     window.location.href = '/';
                 }
-
             })
             .catch(err => {
+                console.log("error on signin b/c fake account");
                 console.error(err);  // TODO: change this to be user-friendly error
             });
     };
