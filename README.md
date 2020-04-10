@@ -45,23 +45,18 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
-### `npm install`
+### `yarn install`
 
 Installs the dependencies.
 Make sure to run this in both "/" and "/frontend"
 
-### `npm start`
+### `yarn start`
 
 Runs the app in the development mode.<br />
 Browser should open automatically.
 Make sure to run this in both "/" and "/client"
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
+### `yarn run build`
 
 Builds the app for production to the `build` folder.<br />
 It correctly bundles React in production mode and optimizes the build for the best performance.
