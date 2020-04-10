@@ -13,7 +13,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import userRequests from '../../requests/userRequests'
-
+import SnackBar from '../SnackBar/SnackBar';
 
 const useStyles = theme => ({
   root: {
@@ -60,8 +60,19 @@ class SignInSide extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+          open: false
+        }
         this.handleSignIn = this.handleSignIn.bind(this);
     }
+
+    closeSnackBar = () => {
+      this.setState({ open: false });
+    };
+
+    openSnackBar = () => {
+      this.setState({ open: true });
+    };
 
     handleSignIn = (e) => {
         // prevent from refreshing the page on submit
@@ -72,13 +83,13 @@ class SignInSide extends React.Component {
             .signin(user)
             .then((res) => {
                 if (res.status !== 200) {
-                    console.log("error on signin b/c fake account");
+                    this.setState({open: true});
                 } else {
                     window.location.href = '/';
                 }
-
             })
             .catch(err => {
+                console.log("error on signin b/c fake account");
                 console.error(err);  // TODO: change this to be user-friendly error
             });
     };
@@ -93,13 +104,14 @@ class SignInSide extends React.Component {
                     <div className={this.props.classes.paper}>
                         <Link variant="h1" color="primary" href="/">
                             Jigsaw
-                  </Link>
+                        </Link>
                         <Avatar className={this.props.classes.avatar}>
                             <LockOutlinedIcon />
                         </Avatar>
                         <Typography component="h1" variant="h5">
                             Sign in
-                  </Typography>
+                        </Typography>
+                        <SnackBar open={this.state.open} onClose={this.closeSnackBar} message="Incorrect email or password"/>
                         <form className={this.props.classes.form} noValidate>
                             <TextField
                                 variant="outlined"

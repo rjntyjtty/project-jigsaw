@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import userRequests from '../../requests/userRequests'
-
+import SnackBar from '../SnackBar/SnackBar';
 
 function Credits() {
   return (
@@ -55,9 +55,20 @@ class SignUp extends React.Component {
             signUpEmail:'',
             signUpPassword:''
         }*/
+        this.state = {
+          open: false
+        }
 
         this.handleSignUp = this.handleSignUp.bind(this);
     }
+
+    closeSnackBar = () => {
+      this.setState({ open: false });
+    };
+
+    openSnackBar = () => {
+      this.setState({ open: true });
+    };
 
     handleSignUp = (e) => {
         // prevent from refreshing the page on submit
@@ -68,13 +79,14 @@ class SignUp extends React.Component {
             .signup(new_user)
             .then((res) => {
                 if (res.status !== 200) {
-                    console.log("error, user already exists");
+                    this.setState({open: true});
                 } else {
                     window.location.href = '/';
                 }
 
             })
             .catch(err => {
+                console.log("error on signin b/c fake account");
                 console.error(err);  // TODO: change this to be user-friendly error
             });
     };
@@ -87,13 +99,14 @@ class SignUp extends React.Component {
                 <div className={this.props.classes.paper}>
                     <Link variant="h1" color="primary" href="/">
                         Jigsaw
-              </Link>
+                    </Link>
                     <Avatar className={this.props.classes.avatar}>
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Sign up
-            </Typography>
+                    </Typography>
+                    <SnackBar open={this.state.open} onClose={this.closeSnackBar} message="User already exists"/>
                     <form className={this.props.classes.form} noValidate>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
