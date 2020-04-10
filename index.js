@@ -14,9 +14,8 @@ app.use(bodyParser.json());
 // Serve the static files from the React app
 app.use(express.static(path.join(__dirname, 'frontend/build')));
 
-
 const PORT = process.env.PORT || 50001;
-var url = "mongodb+srv://jigsaw:jigsaw@jigsaw-zu3bn.mongodb.net/test?retryWrites=true&w=majority"; // password Bj5pYm5)C+muPvn
+var url = process.env.MONGODB_URI || "DB_URI_EMPTY";
 
 io.sockets.on('connection', (socket) => {
     //console.log('user connected')
