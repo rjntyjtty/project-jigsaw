@@ -50,12 +50,6 @@ In the project directory, you can run:
 Installs the dependencies.
 Make sure to run this in both "/" and "/frontend"
 
-Download MongoDB the first time from https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
-
-Run MongoDB every time:
-### cd '.\Program Files\MongoDB\Server\4.2\bin\'
-### .\mongo.exe
-
 ### `npm start`
 
 Runs the app in the development mode.<br />
