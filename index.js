@@ -223,22 +223,22 @@ app.post('/api/projects/', isAuthenticated, function (req, res, next) {  // save
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
         let dbo = db.db("mydb");
 
-        // if not given custom permalink, mongo will automatically generate a unique one
-        let new_project = { users: [user], title: title, code: code, anons: [], bookmarks: [], public: false };
         if (permalink) {
             dbo.collection("projects").find({ _id: permalink }).toArray(function (err, projects) {  // check permalink is available
                 if (err) return res.status(500).end(err);
                 let project = projects[0];
                 if (project) return res.status(409).end("A project already exists at: " + permalink);
                 // note we are given only a singular user who started the project, but put it in a list in anticipation for future users
-                new_project = { _id: permalink, users: [user], title: title, code: code, anons: [], bookmarks: [], public: false };
+                let new_project = { _id: String(permalink), users: [user], title: title, code: code, anons: [], bookmarks: [], public: false };
+
+                dbo.collection("projects").insertOne(new_project, function (err, res2) {
+                    if (err) return res2.status(500).end(err);
+                    db.close();
+                    return res.json(new_project);
+                });
             });
         }
-        dbo.collection("projects").insertOne(new_project, function (err, res) {
-            if (err) return res.status(500).end(err);
-            db.close();
-            return res.json(new_project);
-        });
+
     });
 });
 

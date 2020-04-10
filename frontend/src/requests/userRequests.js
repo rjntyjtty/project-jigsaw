@@ -9,7 +9,7 @@ let userRequests = {
             return response
         }
         catch (error) {
-            console.error(error);
+            //console.error(error);
             return error
         }
     },
@@ -19,7 +19,7 @@ let userRequests = {
             return response
         }
         catch (error) {
-            console.error(error);
+            //console.error(error);
             return error.response;
         }
     },
@@ -29,7 +29,7 @@ let userRequests = {
             return response
         }
         catch (error) {
-            console.error(error);
+            //console.error(error);
             return error
         }
     },
@@ -39,7 +39,7 @@ let userRequests = {
             return response
         }
         catch (error) {
-            console.error(error);
+            //console.error(error);
             return error
         }
     }

@@ -134,8 +134,14 @@ class NavAppBar extends React.Component {
 
   getShareLink = () => {
     copy(window.location.href);
-    this.setState({ snackOpen: true });
     this.setState({ message: "Share link copied" });
+    this.setState({ snackOpen: true });
+  }
+
+  saveProject = () => {
+    this.setState({ message: "Project saved!" });
+    this.setState({ snackOpen: true });
+    this.props.handleSave();
   }
 
   badge() {
@@ -190,7 +196,7 @@ class NavAppBar extends React.Component {
         <Tooltip title={<span style={{ fontSize: "20px" }}>Save</span>}>
           <IconButton
           color="inherit"
-          onClick={console.log("temp")}
+          onClick={this.saveProject}
           >
             <SaveIcon />
           </IconButton>
@@ -250,8 +256,8 @@ class NavAppBar extends React.Component {
         .getCurrUser()
         .then(res => {
             try {
-                console.log(res.data);
-            this.setState({current_user: res.data.firstName})
+                //console.log(res.data);
+                this.setState({current_user: res.data.firstName})
           } catch {
             //console.log(res.data);
           }

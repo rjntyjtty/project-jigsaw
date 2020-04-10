@@ -51,6 +51,7 @@ class CodeEditor extends React.Component {
     onChange = (newValue) => {
       this.setState({code: newValue});
       socket.emit('message', {newValue, room: this.state.room});
+      this.props.onCodeUpdate(this.state.code);
     }
 
     // https://github.com/securingsincity/react-ace/issues/181
