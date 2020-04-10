@@ -79,7 +79,6 @@ class SignUp extends React.Component {
             .signup(new_user)
             .then((res) => {
                 if (res.status !== 200) {
-                    //console.log("error, user already exists");
                     this.setState({open: true});
                 } else {
                     window.location.href = '/';
@@ -87,6 +86,7 @@ class SignUp extends React.Component {
 
             })
             .catch(err => {
+                console.log("error on signin b/c fake account");
                 console.error(err);  // TODO: change this to be user-friendly error
             });
     };
