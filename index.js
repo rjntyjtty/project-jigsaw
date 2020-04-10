@@ -16,7 +16,7 @@ app.use(express.static(path.join(__dirname, 'frontend/build')));
 
 
 const PORT = process.env.PORT || 50001;
-var url = "mongodb://localhost:/" + PORT + "/";
+var url = "mongodb+srv://jigsaw:jigsaw@jigsaw-zu3bn.mongodb.net/test?retryWrites=true&w=majority"; // password Bj5pYm5)C+muPvn
 
 io.sockets.on('connection', (socket) => {
     //console.log('user connected')
@@ -174,7 +174,7 @@ app.get('/api/users/', function (req, res, next) {  // get all users
             if (err) return res.status(500).end(err);
             db.close();
             return res.json(users);
-        });        
+        });
     });
 });
 
@@ -218,7 +218,7 @@ app.post('/api/projects/', isAuthenticated, function (req, res, next) {  // save
     let title = req.body.title;
     let code = req.body.code;
     let user = req.session.email;
-    
+
     MongoClient.connect(url, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
         let dbo = db.db("mydb");
@@ -238,7 +238,7 @@ app.post('/api/projects/', isAuthenticated, function (req, res, next) {  // save
             if (err) return res.status(500).end(err);
             db.close();
             return res.json(new_project);
-        });   
+        });
     });
 });
 
@@ -303,7 +303,7 @@ app.patch('/api/projects/', function (req, res, next) {
     let anons = req.body.anons;
     let bookmarks = req.body.bookmarks;
 
-    if (users.includes(req.session.))
+    //if (users.includes(req.session.))
 
     MongoClient.connect(url, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
@@ -346,6 +346,6 @@ app.delete('/api/projects/:user/', function (req, res, next) {  // user removes 
 });
 
 // Handles any requests that don't match the ones above
-/*app.get('*', (req,res) =>{
+app.get('*', (req,res) =>{
     res.sendFile(path.join(__dirname, 'frontend/build/index.html'));
-});*/
+});

@@ -78,7 +78,7 @@ class SignUp extends React.Component {
         userRequests
             .signup(new_user)
             .then((res) => {
-                if (res.status != 200) {
+                if (res.status !== 200) {
                     this.setState({open: true});
                 } else {
                     window.location.href = '/';
