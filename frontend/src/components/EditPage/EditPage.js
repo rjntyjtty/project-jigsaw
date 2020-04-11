@@ -24,13 +24,21 @@ class EditPage extends React.Component {
 
   onCodeUpdate = (code) => {
     this.setState({ code: code });
+    this.handleSave();
   };
 
   handleSave = () => {
-    let permalink = window.location.href;
-    
+    let permalink = window.location.href.split('/').slice(-1).pop();
+
     projectRequests
-        .addProject({permalink: permalink, title: this.state.title, code: this.state.code});
+        .addProject({permalink: permalink, title: this.state.title, code: this.state.code})
+        .then(res => {
+            try {
+              if (res.status !== 200) { // if project exists, patch
+                projectRequests.updateProject({permalink: permalink, code: this.state.code});
+              }
+          } catch {}
+        });
   }
 
     render() {

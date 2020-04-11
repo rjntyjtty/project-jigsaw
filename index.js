@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'frontend/build')));
 
 const PORT = process.env.PORT || 50001;
-var url = process.env.MONGODB_URI || "DB_URI_EMPTY";
+var url = process.env.MONGODB_URI || "mongodb+srv://jigsaw:jigsaw@jigsaw-zu3bn.mongodb.net/test?retryWrites=true&w=majority";
 
 io.sockets.on('connection', (socket) => {
     //console.log('user connected')
@@ -212,11 +212,11 @@ app.get('/api/current_user/', function (req, res, next) {  // get currently logg
 // ************************************* PROJECTS ***************************************
 // **************************************************************************************
 
-app.post('/api/projects/', isAuthenticated, function (req, res, next) {  // save new project; anons can't save projects
+app.post('/api/projects/', function (req, res, next) {  // save new project; anons can't save projects
     let permalink = req.body.permalink;  // could've just let mongo generate unique ids, but in case user wants to make custom url (that isn't taken)
     let title = req.body.title;
     let code = req.body.code;
-    let user = req.session.email;
+    let user = req.session.email || "";
 
     MongoClient.connect(url, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
@@ -241,8 +241,28 @@ app.post('/api/projects/', isAuthenticated, function (req, res, next) {  // save
     });
 });
 
-// should change to admin permission only? maybe?
+// user=sally@mail.com - req.query.user
 app.get('/api/projects/', function (req, res, next) {  // get all projects
+    if (req.query.user) {
+      MongoClient.connect(url, function (err, db) {
+          if (err) return res.status(500).end(err);  // failed to connect to mongoDB
+          let dbo = db.db("mydb");
+
+          dbo.collection("users").find({ _id: req.query.user}).toArray(function (err, users) {
+              if (err) return res.status(500).end(err);
+              let user = users[0];
+              if (!user) return res.status(409).end("Account does not exist: " + req.query.user);
+
+              dbo.collection("projects").find({ users: req.query.user }).toArray(function (err, projects) {
+                  if (err) return res.status(500).end(err);
+
+                  db.close();
+                  return res.json(projects);
+              });
+          });
+      });
+    }
+
     MongoClient.connect(url, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
         let dbo = db.db("mydb");
@@ -255,7 +275,7 @@ app.get('/api/projects/', function (req, res, next) {  // get all projects
     });
 });
 
-app.get('/api/projects/:id/permalink/', function (req, res, next) {  // get the project with given permalink
+app.get('/api/projects/:id/', function (req, res, next) {  // get the project with given permalink
     MongoClient.connect(url, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
         let dbo = db.db("mydb");
@@ -263,7 +283,7 @@ app.get('/api/projects/:id/permalink/', function (req, res, next) {  // get the 
         dbo.collection("projects").find({_id: req.params.id}).toArray(function (err, projects) {
             if (err) return res.status(500).end(err);
             let project = projects[0];
-            if (!project || (!project.public && !project.users.includes(req.session.user) )) return res.status(404).end("Project does not exist at: " + req.params.id);
+            if (!project) return res.status(404).end("Project does not exist at: " + req.params.id);
             db.close();
             return res.json(project);
         });
@@ -297,10 +317,10 @@ app.get('/api/projects/:id/user/', function (req, res, next) {  // get projects 
 // also thinking about refactoring so that we only pass in new users, and this function will append them to an existing list
 app.patch('/api/projects/', function (req, res, next) {
     let permalink = req.body.permalink;
-    let users = req.body.users;   // do we need to check if each user is actually a real account?
-    let code = req.body.code;
-    let anons = req.body.anons;
-    let bookmarks = req.body.bookmarks;
+    let user = req.body.user || req.session.email;   // do we need to check if each user is actually a real account?
+    let code = req.body.code || "";
+    let anons = req.body.anons || [];
+    let bookmarks = req.body.bookmarks || [];
 
     //if (users.includes(req.session.))
 
@@ -313,12 +333,16 @@ app.patch('/api/projects/', function (req, res, next) {
             let project = projects[0];
             if (!project) return res.status(409).end("No project exists at: " + permalink);
 
-            let updated_project = { $set: { users: users, anons: anons, code: code, bookmarks: bookmarks } };
-            dbo.collection("projects").updateOne({ _id: permalink }, updated_project, function (err, res) {
-                if (err) return res.status(500).end(err);
+            let updatedUsers = project.users;
+            if(project.users.indexOf(user) === -1 && user !== null) {
+                updatedUsers.push(user);
+            }
+            let updated_project = { $set: { users: updatedUsers, code: code } };
+            dbo.collection("projects").updateOne({ _id: permalink }, updated_project, function (err, res2) {
+                if (err) return res2.status(500).end(err);
 
                 db.close();
-                return res.json("Project " + title + " at " + permalink + " updated");
+                return res.json("Project " + " at " + permalink + " updated");
             });
         });
     });

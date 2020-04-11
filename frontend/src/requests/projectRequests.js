@@ -13,9 +13,9 @@ let projectRequests = {
             return error
         }
     },
-    getProject: async function (obj) {
+    getProject: async function (id) {
         try {
-            const response = await axios.post('/api/signup', obj)
+            const response = await axios.get('/api/projects/' + id + '/')
             return response
         }
         catch (error) {
@@ -25,7 +25,7 @@ let projectRequests = {
     },
     updateProject: async function (obj) {
         try {
-            const response = await axios.post('/api/signup', obj)
+            const response = await axios.patch('/api/projects', obj)
             return response
         }
         catch (error) {
@@ -33,7 +33,7 @@ let projectRequests = {
             return error
         }
     }
-    
+
 
 }
 
