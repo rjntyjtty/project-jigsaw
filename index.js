@@ -9,13 +9,16 @@ const session = require('express-session');
 const MongoClient = require('mongodb').MongoClient;
 const crypto = require('crypto');
 
+// set the environment
+require('dotenv').config();
+
 app.use(bodyParser.json());
 
 // Serve the static files from the React app
 app.use(express.static(path.join(__dirname, 'frontend/build')));
 
 const PORT = process.env.PORT || 50001;
-var url = process.env.MONGODB_URI || "DB_URI_EMPTY";
+var url = process.env.MONGODB_URI;
 
 io.sockets.on('connection', (socket) => {
     //console.log('user connected')
@@ -71,7 +74,6 @@ app.use(session({
 app.use(function (req, res, next) {
     req.email = (req.session.email) ? req.session.email : "";
     console.log("HTTP request", req.email, req.method, req.url, req.body);
-
     MongoClient.connect(url, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
         let dbo = db.db("mydb");
