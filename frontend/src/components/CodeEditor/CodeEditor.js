@@ -8,6 +8,7 @@ import generateRandom from 'sillyname';
 
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-dracula";
+import projectRequests from '../../requests/projectRequests'
 import starterCode from './starterCode';
 
 require('./CodeEditor.css')
@@ -39,13 +40,28 @@ class CodeEditor extends React.Component {
             room: code.room
           });
         });
+
+        projectRequests
+        .getProject(window.location.href.split('/').slice(-1).pop())
+        .then(res => {
+            try {
+              if (res.status === 200) { // if project exists update state code
+                this.setState({code: res.data.code});
+                this.props.compileCode(res.data.code);
+              } else {
+                this.setState({code: starterCode});
+                this.props.compileCode(starterCode);
+              }
+          } catch {}
+        });
     }
 
     componentDidMount() {
-        this.props.compileCode(this.state.code);
         if(window.location.pathname === '/edit'){
           window.location.pathname = `/edit/${generateRandom().split(' ').join('')}`
         }
+
+        //this.props.compileCode(this.state.code);
     }
 
     onChange = (newValue) => {
