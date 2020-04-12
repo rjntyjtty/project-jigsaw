@@ -2,6 +2,8 @@
 ## CSCC09 Project
 
 ### Project name: Jigsaw
+Website: https://project-jigsaw.herokuapp.com/
+API Docs: https://github.com/UTSCC09/project-jigsaw/wiki/API-Docs
 
 ### Team members:
 - David (Sheng Wei) Cui - 1004267553 - cuisheng
