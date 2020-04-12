@@ -112,7 +112,7 @@ class SignInSide extends React.Component {
                             Sign in
                         </Typography>
                         <SnackBar open={this.state.open} onClose={this.closeSnackBar} message="Incorrect email or password"/>
-                        <form className={this.props.classes.form} noValidate>
+                        <form className={this.props.classes.form} onSubmit={this.handleSignIn}>
                             <TextField
                                 variant="outlined"
                                 margin="normal"
@@ -147,7 +147,6 @@ class SignInSide extends React.Component {
                                 variant="contained"
                                 color="primary"
                                 className={this.props.classes.submit}
-                                onClick={this.handleSignIn}
                             >
                                 Sign In
                     </Button>

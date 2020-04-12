@@ -212,7 +212,7 @@ class NavAppBar extends React.Component {
   }
 
   loginLogoutButton() {
-    if (this.state.current_user) {
+    if (! this.state.current_user) {
       return (
           <Button
             href="/login"
@@ -272,7 +272,7 @@ class NavAppBar extends React.Component {
         .getCurrUser()
         .then(res => {
             try {
-                if (res.status === 200)
+                if (res.status === 200) {
                   this.setState({current_user: res.data.firstName})
                   let currUser = res.data._id;
                   projectRequests
@@ -283,6 +283,7 @@ class NavAppBar extends React.Component {
                             this.setState({projects: projects});
                         } catch {}
                       });
+                }
           } catch {}
         });
 
