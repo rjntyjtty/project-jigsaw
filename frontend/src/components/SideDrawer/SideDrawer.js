@@ -76,12 +76,13 @@ class SideDrawer extends React.Component {
           this.setState({color: randomColor()});
         });
   }
-  
+
   messageValueChanged(message) {
     this.setState({value: message.target.value});
   }
 
-  sendMessage() {
+  sendMessage(event) {
+    event.preventDefault();
     if (this.state.value) {
       socket.emit('chat message', {value: this.state.value, room: this.state.room, user: this.state.current_user, color: this.state.color});
       this.setState({
@@ -94,10 +95,10 @@ class SideDrawer extends React.Component {
     const history = this.state.messages;
     const chatHistory = history.map( (msg, key) => {
       return (
-          <ListItem id="message" key={key} style={{maxWidth: "300px"}}>
+          <li id="message" key={key} style={{maxWidth: "300px"}}>
             <div className="username" id="message" style={{color: msg.color}} key={key}>{msg.user}:</div>
             <div style={{wordWrap: "break-word"}}>{msg.value}</div>
-          </ListItem>
+          </li>
       );
     });
 
@@ -128,7 +129,7 @@ class SideDrawer extends React.Component {
         <List id="messages">{chatHistory}</List>
         <form className="form">
           <TextField className="message-field" variant="outlined" value={this.state.value} onChange={this.messageValueChanged} />
-          <Button className="send-message-button" variant="contained" color="primary" onClick={this.sendMessage}>Send</Button>
+          <Button type="submit" className="send-message-button" variant="contained" color="primary" onClick={this.sendMessage}>Send</Button>
         </form>
       </Drawer>
     );
