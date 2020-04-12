@@ -46,7 +46,7 @@ class PostContent extends PureComponent {
         .removeUserFromProject(this.state.selectedId)
         .then(res => {
             try {
-              location.reload();
+              window.location.reload();
           } catch {}
         }); // maybe snackbar?
   };
