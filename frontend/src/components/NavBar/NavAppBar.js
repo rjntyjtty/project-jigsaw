@@ -14,10 +14,16 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChatIcon from '@material-ui/icons/Chat';
 import ShareIcon from '@material-ui/icons/Share';
 import SaveIcon from '@material-ui/icons/Save';
-import { mainListItems, secondaryListItems } from '../DashboardPage/listItems';
+import { mainListItems } from '../DashboardPage/listItems';
 import Tooltip from '@material-ui/core/Tooltip';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import { Button, withStyles } from '@material-ui/core';
-import userRequests from '../../requests/userRequests'
+import userRequests from '../../requests/userRequests';
+import projectRequests from '../../requests/projectRequests';
 import SnackBar from '../SnackBar/SnackBar';
 import copy from 'copy-to-clipboard';
 
@@ -239,6 +245,19 @@ class NavAppBar extends React.Component {
     }
   }
 
+  recentProjects() {
+    return (
+      this.state.projects.map((element, i) => (
+        <ListItem button component="a" key={i} href={'/edit/' + element._id}>
+          <ListItemIcon>
+            <AssignmentIcon/>
+          </ListItemIcon>
+          <ListItemText primary={element.title} />
+        </ListItem>
+      ))
+    );
+  }
+
   constructor(props) {
       super(props);
 
@@ -246,7 +265,8 @@ class NavAppBar extends React.Component {
           open: false,
           snackOpen: false,
           current_user: "",
-          message: ""
+          message: "",
+          projects: []
       }
 
   }
@@ -258,8 +278,19 @@ class NavAppBar extends React.Component {
             try {
                 if (res.status === 200)
                   this.setState({current_user: res.data.firstName})
+                  let currUser = res.data._id;
+                  projectRequests
+                      .getUserProjects(currUser)
+                      .then(res => {
+                          try {
+                            let projects = res.data.reverse().slice(0, 5);
+                            this.setState({projects: projects});
+                        } catch {}
+                      });
           } catch {}
         });
+
+
   }
   render(){
     const open = this.state.open;
@@ -304,7 +335,10 @@ class NavAppBar extends React.Component {
           <Divider />
           <List>{mainListItems}</List>
           <Divider />
-          <List>{secondaryListItems}</List>
+          <List>
+            <ListSubheader inset>Recent projects</ListSubheader>
+            {this.recentProjects()}
+          </List>
         </Drawer>
       </div>
     );
