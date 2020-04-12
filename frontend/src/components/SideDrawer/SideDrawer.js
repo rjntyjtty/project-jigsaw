@@ -6,7 +6,9 @@ import {
   Divider,
   Typography,
   Box,
-  withStyles
+  withStyles,
+  TextField,
+  Button
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import socketIOClient from 'socket.io-client';
@@ -25,7 +27,6 @@ const styles = {
 };
 
 class SideDrawer extends React.Component {
-  //const { classes, onClose, open } = props;
   constructor(props) {
       super(props);
 
@@ -38,8 +39,8 @@ class SideDrawer extends React.Component {
           color: ''
       }
 
-      this.handleChange = this.handleChange.bind(this);
-      this.handleSubmit = this.handleSubmit.bind(this);
+      this.messageValueChanged = this.messageValueChanged.bind(this);
+      this.sendMessage = this.sendMessage.bind(this);
 
       if(window.location.pathname !== '/edit' && window.location.pathname !== ''){
         socket.emit('join', window.location.pathname)
@@ -48,17 +49,16 @@ class SideDrawer extends React.Component {
       socket.on('room', (room) => {
         this.setState({
           room: room
-        })
-      })
+        });
+      });
 
       socket.on('chat message', (msg) => {
         this.setState({
           messages: [...this.state.messages, {user: msg.user, value: msg.value, color: msg.color}],
           room: msg.room
-        })
+        });
         this.props.onNewMessage();
-        //window.scrollTo(0, document.body.scrollHeight);
-      })
+      });
   }
 
   componentDidMount() {
@@ -66,24 +66,25 @@ class SideDrawer extends React.Component {
         .getCurrUser()
         .then(res => {
           try {
-            this.setState({current_user: res.data[0].firstName + " " + res.data[0].lastName})
+            this.setState({current_user: res.data[0].firstName + " " + res.data[0].lastName});
           } catch {
-            this.setState({current_user: "Anonymous " + generateRandom()})
+            this.setState({current_user: "Anonymous " + generateRandom()});
           }
-          this.setState({color: randomColor()})
+          this.setState({color: randomColor()});
         });
   }
-
-  handleChange(event) {
-    this.setState({value: event.target.value});
+  
+  messageValueChanged(message) {
+    this.setState({value: message.target.value});
   }
 
-  handleSubmit(event) {
-    socket.emit('chat message', {value: this.state.value, room: this.state.room, user: this.state.current_user, color: this.state.color});
-    event.preventDefault();
-    this.setState({
-      value: ''
-    });
+  sendMessage() {
+    if (this.state.value) {
+      socket.emit('chat message', {value: this.state.value, room: this.state.room, user: this.state.current_user, color: this.state.color});
+      this.setState({
+        value: ''
+      });
+    }
   }
 
   render() {
@@ -97,37 +98,37 @@ class SideDrawer extends React.Component {
       );
     });
 
-      return (
-        <Drawer anchor="right" open={this.props.open} variant="persistent" >
+    return (
+      <Drawer anchor="right" open={this.props.open} variant="persistent" >
+      <Toolbar disableGutters style={styles}>
+      </Toolbar>
         <Toolbar disableGutters style={styles}>
-        </Toolbar>
-          <Toolbar disableGutters style={styles}>
-            <Box
-              pl={3}
-              pr={3}
-              display="flex"
-              justifyContent="space-between"
-              width="100%"
-              alignItems="center"
+          <Box
+            pl={3}
+            pr={3}
+            display="flex"
+            justifyContent="space-between"
+            width="100%"
+            alignItems="center"
+          >
+            <Typography variant="h6">Chat</Typography>
+            <IconButton
+              onClick={this.props.onClose}
+              color="primary"
+              aria-label="Close Sidedrawer"
             >
-              <Typography variant="h6">Chat</Typography>
-              <IconButton
-                onClick={this.props.onClose}
-                color="primary"
-                aria-label="Close Sidedrawer"
-              >
-                <CloseIcon />
-              </IconButton>
-            </Box>
-          </Toolbar>
-          <Divider />
-          <ul id="messages">{chatHistory}</ul>
-          <form className="form" onSubmit={this.handleSubmit}>
-            <input className="input" type="text" value={this.state.value} onChange={this.handleChange} /><button className="button">Send</button>
-          </form>
-        </Drawer>
-      );
-
+              <CloseIcon />
+            </IconButton>
+          </Box>
+        </Toolbar>
+        <Divider />
+        <ul id="messages">{chatHistory}</ul>
+        <form className="form">
+          <TextField className="message-field" variant="outlined" value={this.state.value} onChange={this.messageValueChanged} />
+          <Button className="send-message-button" variant="contained" color="primary" onClick={this.sendMessage}>Send</Button>
+        </form>
+      </Drawer>
+    );
   }
 }
 

@@ -2,6 +2,9 @@
 ## CSCC09 Project
 
 ### Project name: Jigsaw
+Website: https://project-jigsaw.herokuapp.com/
+
+API Docs: https://github.com/UTSCC09/project-jigsaw/wiki/API-Docs
 
 ### Team members:
 - David (Sheng Wei) Cui - 1004267553 - cuisheng
@@ -22,7 +25,7 @@ Project Jigsaw is a collaborative 3D model editing platform where users can work
 - Model rendering
 
 
-### Description of technology we will use
+### Description of technology we use
 - React framework for frontend
 - Node express backend
 - MongoDB for database

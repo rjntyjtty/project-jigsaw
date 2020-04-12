@@ -212,7 +212,7 @@ class NavAppBar extends React.Component {
   }
 
   loginLogoutButton() {
-    if (this.state.current_user === "") {
+    if (this.state.current_user) {
       return (
           <Button
             href="/login"
@@ -236,13 +236,11 @@ class NavAppBar extends React.Component {
   }
 
   username() {
-    if (this.state.current_user !== "") {
-      return (
-        <Typography component="h1" variant="h6" color="inherit" noWrap >
-          {this.state.current_user}
-        </Typography>
-      );
-    }
+    return (
+      <Typography component="h1" variant="h6" color="inherit" noWrap >
+        {this.state.current_user}
+      </Typography>
+    );
   }
 
   recentProjects() {
@@ -260,15 +258,13 @@ class NavAppBar extends React.Component {
 
   constructor(props) {
       super(props);
-
       this.state = {
           open: false,
           snackOpen: false,
-          current_user: "",
-          message: "",
+          current_user: null,
+          message: null,
           projects: []
       }
-
   }
 
   componentDidMount() {
