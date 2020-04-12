@@ -17,7 +17,7 @@ class Posts extends React.Component {
             try {
                 if (res.status === 200) {
                   this.setState({loggedIn: true});
-                  let currUser = res.data.firstName;
+                  let currUser = res.data._id;
                   projectRequests
                       .getUserProjects(currUser)
                       .then(res => {
