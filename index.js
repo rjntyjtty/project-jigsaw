@@ -18,7 +18,9 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'frontend/build')));
 
 const PORT = process.env.PORT || 50001;
-var url = "mongodb+srv://jigsaw:jigsaw@jigsaw-zu3bn.mongodb.net/test?retryWrites=true&w=majority";
+const DB_URI = process.env.MONGODB_URI;
+const DB_NAME = process.env.DB_NAME;
+
 
 io.sockets.on('connection', (socket) => {
     //console.log('user connected')
@@ -55,11 +57,6 @@ server.listen(PORT);
 
 console.log('App is listening on port ' + PORT);
 
-
-// **************************************************************************************
-// *************************************** USERS ****************************************
-// **************************************************************************************
-
 let isAuthenticated = function (req, res, next) {
     if (!req.email) return res.status(401).end("access denied");
     next();
@@ -71,12 +68,16 @@ app.use(session({
     saveUninitialized: true,
 }));
 
+// **************************************************************************************
+// *************************************** USERS ****************************************
+// **************************************************************************************
+
 app.use(function (req, res, next) {
     req.email = (req.session.email) ? req.session.email : "";
     console.log("HTTP request", req.email, req.method, req.url, req.body);
-    MongoClient.connect(url, function (err, db) {
+    MongoClient.connect(DB_URI, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
-        let dbo = db.db("mydb");
+        let dbo = db.db(DB_NAME);
 
         dbo.collection("users").find({}).toArray(function (err, users) {
             db.close();
@@ -87,9 +88,9 @@ app.use(function (req, res, next) {
 
 // curl -H "Content-Type: application/json" -X POST -d '{"email":"alice","password":"alice"}' -c cookie.txt localhost:3000/signup/
 app.post('/api/signup/', function (req, res, next) {
-    MongoClient.connect(url, function (err, db) {
+    MongoClient.connect(DB_URI, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
-        let dbo = db.db("mydb");
+        let dbo = db.db(DB_NAME);
         let email = req.body.email;
         let password = req.body.password;
         let firstName = req.body.firstname;
@@ -126,9 +127,9 @@ app.post('/api/signup/', function (req, res, next) {
 
 // curl -H "Content-Type: application/json" -X POST -d '{"email":"alice","password":"alice"}' -c cookie.txt localhost:3000/signin/
 app.post('/api/signin/', function (req, res, next) {
-    MongoClient.connect(url, function (err, db) {
+    MongoClient.connect(DB_URI, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
-        let dbo = db.db("mydb");
+        let dbo = db.db(DB_NAME);
         let email = req.body.email;
         let password = req.body.password;
 
@@ -167,9 +168,9 @@ app.get('/api/signout/', function (req, res, next) {
 });
 
 app.get('/api/users/', function (req, res, next) {  // get all users
-    MongoClient.connect(url, function (err, db) {
+    MongoClient.connect(DB_URI, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
-        let dbo = db.db("mydb");
+        let dbo = db.db(DB_NAME);
 
         dbo.collection("users").find({}).toArray(function (err, users) {
             if (err) return res.status(500).end(err);
@@ -180,9 +181,9 @@ app.get('/api/users/', function (req, res, next) {  // get all users
 });
 
 app.get('/api/users/:id/', function (req, res, next) {  // get user with given email
-    MongoClient.connect(url, function (err, db) {
+    MongoClient.connect(DB_URI, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
-        let dbo = db.db("mydb");
+        let dbo = db.db(DB_NAME);
 
         dbo.collection("users").find({_id: req.params.id}).toArray(function (err, users) {
             if (err) return res.status(500).end(err);
@@ -195,12 +196,12 @@ app.get('/api/users/:id/', function (req, res, next) {  // get user with given e
 });
 
 app.get('/api/current_user/', function (req, res, next) {  // get currently logged in user
-    MongoClient.connect(url, function (err, db) {
-        if (err) return res.status(500).end(err);  // failed to connect to mongoDB
-        let dbo = db.db("mydb");
+    MongoClient.connect(DB_URI, function (err, db) {
+        // if (err) return res.status(500).end(err);  // failed to connect to mongoDB
+        let dbo = db.db(DB_NAME);
 
         dbo.collection("users").find({ _id: req.session.email }).toArray(function (err, users) {
-            if (err) return res.status(500).end(err);
+            if (err) return console.log(err);res.status(500).end(err);
             let curr_user = users[0];
             if (!curr_user) return res.status(204).end("currently signed out");
 
@@ -220,9 +221,9 @@ app.post('/api/projects/', function (req, res, next) {  // save new project; ano
     let code = req.body.code;
     let user = req.session.email || "";
 
-    MongoClient.connect(url, function (err, db) {
+    MongoClient.connect(DB_URI, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
-        let dbo = db.db("mydb");
+        let dbo = db.db(DB_NAME);
 
         if (permalink) {
             dbo.collection("projects").find({ _id: permalink }).toArray(function (err, projects) {  // check permalink is available
@@ -247,9 +248,9 @@ app.post('/api/projects/', function (req, res, next) {  // save new project; ano
 // user=sally@mail.com - req.query.user
 app.get('/api/projects/', function (req, res, next) {  // get all projects
     if (req.query.user) {
-      MongoClient.connect(url, function (err, db) {
+      MongoClient.connect(DB_URI, function (err, db) {
           if (err) return res.status(500).end(err);  // failed to connect to mongoDB
-          let dbo = db.db("mydb");
+          let dbo = db.db(DB_NAME);
 
           dbo.collection("users").find({ _id: req.query.user}).toArray(function (err, users) {
               if (err) return res.status(500).end(err);
@@ -265,9 +266,9 @@ app.get('/api/projects/', function (req, res, next) {  // get all projects
           });
       });
     } else {
-      MongoClient.connect(url, function (err, db) {
+      MongoClient.connect(DB_URI, function (err, db) {
           if (err) return res.status(500).end(err);  // failed to connect to mongoDB
-          let dbo = db.db("mydb");
+          let dbo = db.db(DB_NAME);
 
           dbo.collection("projects").find({}).toArray(function (err, projects) {
               if (err) return res.status(500).end(err);
@@ -280,9 +281,9 @@ app.get('/api/projects/', function (req, res, next) {  // get all projects
 });
 
 app.get('/api/projects/:id/', function (req, res, next) {  // get the project with given permalink
-    MongoClient.connect(url, function (err, db) {
+    MongoClient.connect(DB_URI, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
-        let dbo = db.db("mydb");
+        let dbo = db.db(DB_NAME);
 
         dbo.collection("projects").find({_id: req.params.id}).toArray(function (err, projects) {
             if (err) return res.status(500).end(err);
@@ -295,9 +296,9 @@ app.get('/api/projects/:id/', function (req, res, next) {  // get the project wi
 });
 
 app.get('/api/projects/:id/user/', function (req, res, next) {  // get projects of a given user
-    MongoClient.connect(url, function (err, db) {
+    MongoClient.connect(DB_URI, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
-        let dbo = db.db("mydb");
+        let dbo = db.db(DB_NAME);
 
         dbo.collection("users").find({ _id: req.params.id }).toArray(function (err, users) {
             if (err) return res.status(500).end(err);
@@ -328,9 +329,9 @@ app.patch('/api/projects/', function (req, res, next) {
 
     //if (users.includes(req.session.))
 
-    MongoClient.connect(url, function (err, db) {
+    MongoClient.connect(DB_URI, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
-        let dbo = db.db("mydb");
+        let dbo = db.db(DB_NAME);
 
         dbo.collection("projects").find({ _id: permalink }).toArray(function (err, projects) {
             if (err) return res.status(500).end(err);
@@ -356,9 +357,9 @@ app.delete('/api/projects/:id/', function (req, res, next) {  // user removes se
     let permalink = req.params.id;
     let user = req.session.email;
 
-    MongoClient.connect(url, function (err, db) {
+    MongoClient.connect(DB_URI, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
-        let dbo = db.db("mydb");
+        let dbo = db.db(DB_NAME);
 
         dbo.collection("projects").find({ _id: permalink }).toArray(function (err, projects) {
             if (err) return res.status(500).end(err);
@@ -382,6 +383,6 @@ app.delete('/api/projects/:id/', function (req, res, next) {  // user removes se
 });
 
 // Handles any requests that don't match the ones above
-app.get('*', (req,res) =>{
+app.get('*', (req, res) =>{
     res.sendFile(path.join(__dirname, 'frontend/build/index.html'));
 });
