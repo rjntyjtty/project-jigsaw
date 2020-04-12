@@ -141,11 +141,8 @@ class SignInSide extends React.Component {
                                     this.password = node;
                                 }}
                             />
-                            <FormControlLabel
-                                control={<Checkbox value="remember" color="primary" />}
-                                label="Remember me"
-                            />
                             <Button
+                                type="submit"
                                 fullWidth
                                 variant="contained"
                                 color="primary"
