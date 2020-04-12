@@ -212,7 +212,7 @@ class NavAppBar extends React.Component {
   }
 
   loginLogoutButton() {
-    if (this.state.current_user) {
+    if (! this.state.current_user) {
       return (
           <Button
             href="/login"
