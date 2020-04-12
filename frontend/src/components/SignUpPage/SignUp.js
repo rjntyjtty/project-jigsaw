@@ -107,7 +107,7 @@ class SignUp extends React.Component {
                         Sign up
                     </Typography>
                     <SnackBar open={this.state.open} onClose={this.closeSnackBar} message="User already exists"/>
-                    <form className={this.props.classes.form} noValidate>
+                    <form className={this.props.classes.form} onSubmit={this.handleSignUp}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
@@ -174,7 +174,6 @@ class SignUp extends React.Component {
                             variant="contained"
                             color="primary"
                             className={this.props.classes.submit}
-                            onClick={this.handleSignUp}
                         >
                             Sign Up
               </Button>
