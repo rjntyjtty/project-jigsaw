@@ -81,8 +81,8 @@ class SideDrawer extends React.Component {
     this.setState({value: message.target.value});
   }
 
-  sendMessage(event) {
-    event.preventDefault();
+  sendMessage(e) {
+    e.preventDefault();
     if (this.state.value) {
       socket.emit('chat message', {value: this.state.value, room: this.state.room, user: this.state.current_user, color: this.state.color});
       this.setState({
@@ -127,9 +127,9 @@ class SideDrawer extends React.Component {
         </Toolbar>
         <Divider />
         <List id="messages">{chatHistory}</List>
-        <form className="form">
+        <form className="form" onSubmit={this.sendMessage}>
           <TextField className="message-field" variant="outlined" value={this.state.value} onChange={this.messageValueChanged} />
-          <Button type="submit" className="send-message-button" variant="contained" color="primary" onClick={this.sendMessage}>Send</Button>
+          <Button className="send-message-button" variant="contained" color="primary" type="submit">Send</Button>
         </form>
       </Drawer>
     );
