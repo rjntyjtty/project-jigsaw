@@ -10,7 +10,8 @@ import {
   TextField,
   Button,
   ListItem,
-  List
+  List,
+  ListItemText
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import socketIOClient from 'socket.io-client';
@@ -94,8 +95,7 @@ class SideDrawer extends React.Component {
     const chatHistory = history.map( (msg, key) => {
       return (
           <ListItem id="message" key={key} style={{maxWidth: "300px"}}>
-            <div className="username" id="message" style={{color: msg.color}} key={key}>{msg.user}:</div>
-            <div style={{wordWrap: "break-word"}}>{msg.value}</div>
+            <ListItemText className="username" id="message" style={{color: msg.color}} key={key} primary={msg.user} secondary={msg.value}></ListItemText>
           </ListItem>
       );
     });
