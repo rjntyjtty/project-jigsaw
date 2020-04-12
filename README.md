@@ -24,7 +24,7 @@ Project Jigsaw is a collaborative 3D model editing platform where users can work
 - Model rendering
 
 
-### Description of technology we will use
+### Description of technology we use
 - React framework for frontend
 - Node express backend
 - MongoDB for database
