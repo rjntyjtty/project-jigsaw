@@ -142,6 +142,7 @@ class SignInSide extends React.Component {
                                 }}
                             />
                             <Button
+                                type="submit"
                                 fullWidth
                                 variant="contained"
                                 color="primary"
