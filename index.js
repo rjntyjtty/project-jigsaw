@@ -230,8 +230,8 @@ app.post('/api/projects/', function (req, res, next) {  // save new project; ano
                 let project = projects[0];
                 if (project) return res.status(226).end("A project already exists at: " + permalink);
                 // note we are given only a singular user who started the project, but put it in a list in anticipation for future users
-                let new_project = { _id: String(permalink), users: [user], title: title, code: code, anons: [], bookmarks: [], public: false };
-                if (user === "") new_project = { _id: String(permalink), users: [], title: title, code: code, anons: [], bookmarks: [], public: false };
+                let new_project = { _id: String(permalink), users: [user], title: title, code: code };
+                if (user === "") new_project = { _id: String(permalink), users: [], title: title, code: code };
 
                 dbo.collection("projects").insertOne(new_project, function (err, res2) {
                     if (err) return res.status(500).end(err);
@@ -323,8 +323,6 @@ app.patch('/api/projects/', function (req, res, next) {
     let permalink = req.body.permalink;
     let user = req.body.user || req.session.email || "";   // do we need to check if each user is actually a real account?
     let code = req.body.code || "";
-    let anons = req.body.anons || [];
-    let bookmarks = req.body.bookmarks || [];
 
     //if (users.includes(req.session.))
 
