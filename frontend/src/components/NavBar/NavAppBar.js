@@ -261,14 +261,9 @@ class NavAppBar extends React.Component {
       this.state = {
           open: false,
           snackOpen: false,
-<<<<<<< HEAD
           current_user: null,
-          message: null
-=======
-          current_user: "",
-          message: "",
+          message: null,
           projects: []
->>>>>>> 34be1742b5c2e2157678a7eacbdaf740466c2723
       }
   }
 
