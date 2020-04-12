@@ -95,7 +95,8 @@ class SideDrawer extends React.Component {
     const chatHistory = history.map( (msg, key) => {
       return (
           <ListItem id="message" key={key} style={{maxWidth: "300px"}}>
-            <ListItemText className="username" id="message" style={{color: msg.color}} key={key} primary={msg.user} secondary={msg.value}></ListItemText>
+            <div className="username" id="message" style={{color: msg.color}} key={key}>{msg.user}:</div>
+            <div style={{wordWrap: "break-word"}}>{msg.value}</div>
           </ListItem>
       );
     });
