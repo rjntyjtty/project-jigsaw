@@ -8,7 +8,9 @@ import {
   Box,
   withStyles,
   TextField,
-  Button
+  Button,
+  ListItem,
+  List
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import socketIOClient from 'socket.io-client';
@@ -91,10 +93,10 @@ class SideDrawer extends React.Component {
     const history = this.state.messages;
     const chatHistory = history.map( (msg, key) => {
       return (
-          <li id="message" key={key} style={{maxWidth: "300px"}}>
+          <ListItem id="message" key={key} style={{maxWidth: "300px"}}>
             <div className="username" id="message" style={{color: msg.color}} key={key}>{msg.user}:</div>
             <div style={{wordWrap: "break-word"}}>{msg.value}</div>
-          </li>
+          </ListItem>
       );
     });
 
@@ -122,7 +124,7 @@ class SideDrawer extends React.Component {
           </Box>
         </Toolbar>
         <Divider />
-        <ul id="messages">{chatHistory}</ul>
+        <List id="messages">{chatHistory}</List>
         <form className="form">
           <TextField className="message-field" variant="outlined" value={this.state.value} onChange={this.messageValueChanged} />
           <Button className="send-message-button" variant="contained" color="primary" onClick={this.sendMessage}>Send</Button>
