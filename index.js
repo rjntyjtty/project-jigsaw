@@ -76,7 +76,7 @@ app.use(function (req, res, next) {
     req.email = (req.session.email) ? req.session.email : "";
     console.log("HTTP request", req.email, req.method, req.url, req.body);
     MongoClient.connect(DB_URI, function (err, db) {
-        if (err) return res.status(500).end(err);  // failed to connect to mongoDB
+        if (err) return res.status(500).end();  // failed to connect to mongoDB
         let dbo = db.db(DB_NAME);
 
         dbo.collection("users").find({}).toArray(function (err, users) {
@@ -89,7 +89,7 @@ app.use(function (req, res, next) {
 // curl -H "Content-Type: application/json" -X POST -d '{"email":"alice","password":"alice"}' -c cookie.txt localhost:3000/signup/
 app.post('/api/signup/', function (req, res, next) {
     MongoClient.connect(DB_URI, function (err, db) {
-        if (err) return res.status(500).end(err);  // failed to connect to mongoDB
+        if (err) return res.status(500).end();  // failed to connect to mongoDB
         let dbo = db.db(DB_NAME);
         let email = req.body.email;
         let password = req.body.password;
@@ -97,7 +97,7 @@ app.post('/api/signup/', function (req, res, next) {
         let lastName = req.body.lastname;
 
         dbo.collection("users").find({ _id: email }).toArray(function (err, users) {
-            if (err) return res.status(500).end(err);
+            if (err) return res.status(500).end();
             let user = users[0];
             if (user) return res.status(409).end("An account already exists with email: " + email);
 
@@ -109,7 +109,7 @@ app.post('/api/signup/', function (req, res, next) {
 
             let new_user = { _id: email, salt: salt, saltedHash: saltedHash, firstName: firstName, lastName: lastName };
             dbo.collection("users").insertOne(new_user, function (err, res2) {
-                if (err) return res2.status(500).end(err);
+                if (err) return res2.status(500).end();
 
                 req.session.email = email;
                 // initialize cookie
@@ -128,13 +128,13 @@ app.post('/api/signup/', function (req, res, next) {
 // curl -H "Content-Type: application/json" -X POST -d '{"email":"alice","password":"alice"}' -c cookie.txt localhost:3000/signin/
 app.post('/api/signin/', function (req, res, next) {
     MongoClient.connect(DB_URI, function (err, db) {
-        if (err) return res.status(500).end(err);  // failed to connect to mongoDB
+        if (err) return res.status(500).end();  // failed to connect to mongoDB
         let dbo = db.db(DB_NAME);
         let email = req.body.email;
         let password = req.body.password;
 
         dbo.collection("users").find({ _id: email }).toArray(function (err, users) {
-            if (err) return res.status(500).end(err);
+            if (err) return res.status(500).end();
             let user = users[0];
             if (!user) return res.status(401).end("access denied");
 
@@ -169,11 +169,11 @@ app.get('/api/signout/', function (req, res, next) {
 
 app.get('/api/users/', function (req, res, next) {  // get all users
     MongoClient.connect(DB_URI, function (err, db) {
-        if (err) return res.status(500).end(err);  // failed to connect to mongoDB
+        if (err) return res.status(500).end();  // failed to connect to mongoDB
         let dbo = db.db(DB_NAME);
 
         dbo.collection("users").find({}).toArray(function (err, users) {
-            if (err) return res.status(500).end(err);
+            if (err) return res.status(500).end();
             db.close();
             return res.json(users);
         });
@@ -182,11 +182,11 @@ app.get('/api/users/', function (req, res, next) {  // get all users
 
 app.get('/api/users/:id/', function (req, res, next) {  // get user with given email
     MongoClient.connect(DB_URI, function (err, db) {
-        if (err) return res.status(500).end(err);  // failed to connect to mongoDB
+        if (err) return res.status(500).end();  // failed to connect to mongoDB
         let dbo = db.db(DB_NAME);
 
         dbo.collection("users").find({_id: req.params.id}).toArray(function (err, users) {
-            if (err) return res.status(500).end(err);
+            if (err) return res.status(500).end();
             let user = users[0];
             if (!user) return res.status(409).end("An account does not exist with email: " + req.params.id);
             db.close();
@@ -200,7 +200,7 @@ app.get('/api/current_user/', function (req, res, next) {  // get currently logg
         let dbo = db.db(DB_NAME);
 
         dbo.collection("users").find({ _id: req.session.email }).toArray(function (err, users) {
-            if (err) return res.status(500).end(err);
+            if (err) return res.status(500).end();
             let curr_user = users[0];
             if (!curr_user) return res.status(204).end("currently signed out");
 
@@ -221,12 +221,12 @@ app.post('/api/projects/', function (req, res, next) {  // save new project; ano
     let user = req.session.email || "";
 
     MongoClient.connect(DB_URI, function (err, db) {
-        if (err) return res.status(500).end(err);  // failed to connect to mongoDB
+        if (err) return res.status(500).end();  // failed to connect to mongoDB
         let dbo = db.db(DB_NAME);
 
         if (permalink) {
             dbo.collection("projects").find({ _id: permalink }).toArray(function (err, projects) {  // check permalink is available
-                if (err) return res.status(500).end(err);
+                if (err) return res.status(500).end();
                 let project = projects[0];
                 if (project) return res.status(226).end("A project already exists at: " + permalink);
                 // note we are given only a singular user who started the project, but put it in a list in anticipation for future users
@@ -234,7 +234,7 @@ app.post('/api/projects/', function (req, res, next) {  // save new project; ano
                 if (user === "") new_project = { _id: String(permalink), users: [], title: title, code: code };
 
                 dbo.collection("projects").insertOne(new_project, function (err, res2) {
-                    if (err) return res.status(500).end(err);
+                    if (err) return res.status(500).end();
                     db.close();
                     return res.json(new_project);
                 });
@@ -248,16 +248,16 @@ app.post('/api/projects/', function (req, res, next) {  // save new project; ano
 app.get('/api/projects/', function (req, res, next) {  // get all projects
     if (req.query.user) {
       MongoClient.connect(DB_URI, function (err, db) {
-          if (err) return res.status(500).end(err);  // failed to connect to mongoDB
+          if (err) return res.status(500).end();  // failed to connect to mongoDB
           let dbo = db.db(DB_NAME);
 
           dbo.collection("users").find({ _id: req.query.user}).toArray(function (err, users) {
-              if (err) return res.status(500).end(err);
+              if (err) return res.status(500).end();
               let user = users[0];
               if (!user) return res.status(409).end("Account does not exist: " + req.query.user);
 
               dbo.collection("projects").find({ users: req.query.user }).toArray(function (err, projects) {
-                  if (err) return res.status(500).end(err);
+                  if (err) return res.status(500).end();
 
                   db.close();
                   return res.json(projects);
@@ -266,11 +266,11 @@ app.get('/api/projects/', function (req, res, next) {  // get all projects
       });
     } else {
       MongoClient.connect(DB_URI, function (err, db) {
-          if (err) return res.status(500).end(err);  // failed to connect to mongoDB
+          if (err) return res.status(500).end();  // failed to connect to mongoDB
           let dbo = db.db(DB_NAME);
 
           dbo.collection("projects").find({}).toArray(function (err, projects) {
-              if (err) return res.status(500).end(err);
+              if (err) return res.status(500).end();
               db.close();
               return res.json(projects);
           });
@@ -281,11 +281,11 @@ app.get('/api/projects/', function (req, res, next) {  // get all projects
 
 app.get('/api/projects/:id/', function (req, res, next) {  // get the project with given permalink
     MongoClient.connect(DB_URI, function (err, db) {
-        if (err) return res.status(500).end(err);  // failed to connect to mongoDB
+        if (err) return res.status(500).end();  // failed to connect to mongoDB
         let dbo = db.db(DB_NAME);
 
         dbo.collection("projects").find({_id: req.params.id}).toArray(function (err, projects) {
-            if (err) return res.status(500).end(err);
+            if (err) return res.status(500).end();
             let project = projects[0];
             if (!project) return res.status(204).end("Project does not exist at: " + req.params.id);
             db.close();
@@ -296,16 +296,16 @@ app.get('/api/projects/:id/', function (req, res, next) {  // get the project wi
 
 app.get('/api/projects/:id/user/', function (req, res, next) {  // get projects of a given user
     MongoClient.connect(DB_URI, function (err, db) {
-        if (err) return res.status(500).end(err);  // failed to connect to mongoDB
+        if (err) return res.status(500).end();  // failed to connect to mongoDB
         let dbo = db.db(DB_NAME);
 
         dbo.collection("users").find({ _id: req.params.id }).toArray(function (err, users) {
-            if (err) return res.status(500).end(err);
+            if (err) return res.status(500).end();
             let user = users[0];
             if (!user) return res.status(409).end("Account does not exist or does not contain any public projects: " + req.params.id);
 
             dbo.collection("projects").find({ users: req.params.id }).toArray(function (err, projects) {
-                if (err) return res.status(500).end(err);
+                if (err) return res.status(500).end();
 
                 // if viewing another user's work, can only view public ones or ones where current user is a whitelisted collaborator
                 projects = projects.filter(each => each.users.includes(req.session.email) || each.public);
@@ -327,11 +327,11 @@ app.patch('/api/projects/', function (req, res, next) {
     //if (users.includes(req.session.))
 
     MongoClient.connect(DB_URI, function (err, db) {
-        if (err) return res.status(500).end(err);  // failed to connect to mongoDB
+        if (err) return res.status(500).end();  // failed to connect to mongoDB
         let dbo = db.db(DB_NAME);
 
         dbo.collection("projects").find({ _id: permalink }).toArray(function (err, projects) {
-            if (err) return res.status(500).end(err);
+            if (err) return res.status(500).end();
             let project = projects[0];
             if (!project) return res.status(409).end("No project exists at: " + permalink);
 
@@ -341,7 +341,7 @@ app.patch('/api/projects/', function (req, res, next) {
             }
             let updated_project = { $set: { users: updatedUsers, code: code } };
             dbo.collection("projects").updateOne({ _id: permalink }, updated_project, function (err, res2) {
-                if (err) return res.status(500).end(err);
+                if (err) return res.status(500).end();
 
                 db.close();
                 return res.json("Project " + " at " + permalink + " updated");
@@ -355,11 +355,11 @@ app.delete('/api/projects/:id/', function (req, res, next) {  // user removes se
     let user = req.session.email;
 
     MongoClient.connect(DB_URI, function (err, db) {
-        if (err) return res.status(500).end(err);  // failed to connect to mongoDB
+        if (err) return res.status(500).end();  // failed to connect to mongoDB
         let dbo = db.db(DB_NAME);
 
         dbo.collection("projects").find({ _id: permalink }).toArray(function (err, projects) {
-            if (err) return res.status(500).end(err);
+            if (err) return res.status(500).end();
             let project = projects[0];
             if (!project) return res.status(204).end("No project exists at: " + permalink);
 
@@ -369,7 +369,7 @@ app.delete('/api/projects/:id/', function (req, res, next) {  // user removes se
             }
             let updated_project = { $set: { users: updatedUsers} };
             dbo.collection("projects").updateOne({ _id: permalink }, updated_project, function (err, res2) {
-                if (err) return res2.status(500).end(err);
+                if (err) return res.status(500).end();
 
                 db.close();
                 return res.json("User " + user + " removed from " + permalink);
