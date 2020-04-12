@@ -32,6 +32,26 @@ let projectRequests = {
             //console.error(error);
             return error
         }
+    },
+    getUserProjects: async function (user) {
+        try {
+            const response = await axios.get('/api/projects?user=' + user)
+            return response
+        }
+        catch (error) {
+            //console.error(error);
+            return error
+        }
+    },
+    removeUserFromProject: async function (id) {
+        try {
+            const response = await axios.delete('/api/projects/' + id + '/')
+            return response
+        }
+        catch (error) {
+            //console.error(error);
+            return error
+        }
     }
 
 

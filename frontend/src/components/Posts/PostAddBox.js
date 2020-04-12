@@ -6,47 +6,77 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import starterCode from '../CodeEditor/starterCode';
+import projectRequests from '../../requests/projectRequests'
+import generateRandom from 'sillyname';
 
-export default function PostAddBox() {
-  const [open, setOpen] = React.useState(false);
+class PostAddBox extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+        open: false
+    }
+  }
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  handleClickOpen = () => {
+    this.setState({open: true});
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  handleClose = () => {
+    this.setState({open: false});
   };
 
-  return (
-    <div>
-      <Button variant="outlined" color="secondary" onClick={handleClickOpen}>
-        Add Project
-      </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">New Project</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Add a new project.
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Project Name"
-            type="project name"
-            fullWidth
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="secondary">
-            Cancel
-          </Button>
-          <Button href="/edit" color="primary">
-            Add
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  );
+  handleNewProject = (e) => {
+    e.preventDefault();
+
+    let link = window.location.pathname = `/edit/${generateRandom().split(' ').join('')}`
+    let permalink = link.split('/').slice(-1).pop();
+    let project = {permalink: permalink, title: this.name.value, code: starterCode};
+
+    projectRequests
+        .addProject(project)
+        .then(res => {
+            try {
+              window.location.replace(link);
+          } catch {}
+        });
+  }
+
+  render() {
+    return (
+      <div>
+        <Button variant="outlined" color="secondary" onClick={this.handleClickOpen}>
+          Add Project
+        </Button>
+        <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">New Project</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Add a new project.
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Project Name"
+              type="project name"
+              inputRef={node => {
+                  this.name = node;
+              }}
+              fullWidth
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="secondary">
+              Cancel
+            </Button>
+            <Button onClick={this.handleNewProject} color="primary">
+              Add
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
+  }
 }
+export default PostAddBox

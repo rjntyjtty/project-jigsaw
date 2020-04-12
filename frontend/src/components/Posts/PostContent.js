@@ -1,5 +1,4 @@
 import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
 import {
   Grid,
   TablePagination,
@@ -12,7 +11,9 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ConfirmationDialog from "./ConfirmationDialog";
+import Button from '@material-ui/core/Button';
 import PostAddBox from "./PostAddBox";
+import projectRequests from '../../requests/projectRequests'
 
 const styles = {
   dBlock: { display: "block" },
@@ -26,10 +27,11 @@ class PostContent extends PureComponent {
   state = {
     page: 0,
     deletePostDialogOpen: false,
-    deletePostLoading: false
+    deletePostLoading: false,
+    selectedId: ""
   };
 
-  rowsPerPage = 25;
+  rowsPerPage = 10;
 
   closeDeletePostDialog = () => {
     this.setState({
@@ -39,22 +41,20 @@ class PostContent extends PureComponent {
   };
 
   deletePost = () => {
-    const { pushMessageToSnackbar } = this.props;
-    this.setState({ deletePostLoading: true });
-    setTimeout(() => {
-      this.setState({
-        deletePostLoading: false,
-        deletePostDialogOpen: false
-      });
-      pushMessageToSnackbar({
-        text: "Your scheduled post has been deleted"
-      });
-    }, 1500);
+    console.log("remove from projects " + this.state.selectedId);
+    projectRequests
+        .removeUserFromProject(this.state.selectedId)
+        .then(res => {
+            try {
+              location.reload();
+          } catch {}
+        }); // maybe snackbar?
   };
 
-  onDelete = () => {
+  onDelete = (id) => {
     this.setState({
-      deletePostDialogOpen: true
+      deletePostDialogOpen: true,
+      selectedId: id
     });
   };
 
@@ -74,16 +74,29 @@ class PostContent extends PureComponent {
     if (posts.length > 0) {
       return (
         <Box p={1}>
-          <Grid container spacing={1}>
+        <Grid
+        container
+        direction="column"
+        justify="flex-start"
+        alignItems="stretch"
+        spacing={2}
+        >
             {posts
               .slice(
                 page * this.rowsPerPage,
                 page * this.rowsPerPage + this.rowsPerPage
               )
-              .map(element => (
-                <Grid item xs={6} sm={4} md={3} key={element.id}>
-                  <Typography> {element} </Typography>
-                </Grid>
+              .map((element, i) => (
+                <Box display='flex' margin="4px" key={i}>
+                  <Box flexGrow={1}>
+                    <Button variant="outlined" color="primary" fullWidth={true} href={'/edit/' + element._id}>
+                      {element.title}
+                    </Button>
+                  </Box>
+                  <Button onClick={() => (this.onDelete(element._id))}>
+                    <DeleteIcon />
+                  </Button>
+                </Box>
               ))}
           </Grid>
         </Box>
@@ -133,7 +146,7 @@ class PostContent extends PureComponent {
         <ConfirmationDialog
           open={deletePostDialogOpen}
           title="Confirmation"
-          content="Do you really want to delete the post?"
+          content="Do you really want to remove this project?"
           onClose={this.closeDeletePostDialog}
           loading={deletePostLoading}
           onConfirm={this.deletePost}
@@ -142,11 +155,5 @@ class PostContent extends PureComponent {
     );
   }
 }
-
-PostContent.propTypes = {
-  classes: PropTypes.object.isRequired,
-  posts: PropTypes.arrayOf(PropTypes.object).isRequired,
-  pushMessageToSnackbar: PropTypes.func
-};
 
 export default withStyles(styles)(PostContent);

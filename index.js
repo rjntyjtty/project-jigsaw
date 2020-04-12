@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'frontend/build')));
 
 const PORT = process.env.PORT || 50001;
-var url = process.env.MONGODB_URI;
+var url = "mongodb+srv://jigsaw:jigsaw@jigsaw-zu3bn.mongodb.net/test?retryWrites=true&w=majority";
 
 io.sockets.on('connection', (socket) => {
     //console.log('user connected')
@@ -202,7 +202,7 @@ app.get('/api/current_user/', function (req, res, next) {  // get currently logg
         dbo.collection("users").find({ _id: req.session.email }).toArray(function (err, users) {
             if (err) return res.status(500).end(err);
             let curr_user = users[0];
-            if (!curr_user) return res.status(404).end("currently signed out");
+            if (!curr_user) return res.status(204).end("currently signed out");
 
             db.close();
             return res.json(curr_user);
@@ -216,7 +216,7 @@ app.get('/api/current_user/', function (req, res, next) {  // get currently logg
 
 app.post('/api/projects/', function (req, res, next) {  // save new project; anons can't save projects
     let permalink = req.body.permalink;  // could've just let mongo generate unique ids, but in case user wants to make custom url (that isn't taken)
-    let title = req.body.title;
+    let title = req.body.title || "New Project";
     let code = req.body.code;
     let user = req.session.email || "";
 
@@ -228,9 +228,10 @@ app.post('/api/projects/', function (req, res, next) {  // save new project; ano
             dbo.collection("projects").find({ _id: permalink }).toArray(function (err, projects) {  // check permalink is available
                 if (err) return res.status(500).end(err);
                 let project = projects[0];
-                if (project) return res.status(409).end("A project already exists at: " + permalink);
+                if (project) return res.status(226).end("A project already exists at: " + permalink);
                 // note we are given only a singular user who started the project, but put it in a list in anticipation for future users
                 let new_project = { _id: String(permalink), users: [user], title: title, code: code, anons: [], bookmarks: [], public: false };
+                if (user === "") new_project = { _id: String(permalink), users: [], title: title, code: code, anons: [], bookmarks: [], public: false };
 
                 dbo.collection("projects").insertOne(new_project, function (err, res2) {
                     if (err) return res2.status(500).end(err);
@@ -263,18 +264,19 @@ app.get('/api/projects/', function (req, res, next) {  // get all projects
               });
           });
       });
+    } else {
+      MongoClient.connect(url, function (err, db) {
+          if (err) return res.status(500).end(err);  // failed to connect to mongoDB
+          let dbo = db.db("mydb");
+
+          dbo.collection("projects").find({}).toArray(function (err, projects) {
+              if (err) return res.status(500).end(err);
+              db.close();
+              return res.json(projects);
+          });
+      });
     }
 
-    MongoClient.connect(url, function (err, db) {
-        if (err) return res.status(500).end(err);  // failed to connect to mongoDB
-        let dbo = db.db("mydb");
-
-        dbo.collection("projects").find({}).toArray(function (err, projects) {
-            if (err) return res.status(500).end(err);
-            db.close();
-            return res.json(projects);
-        });
-    });
 });
 
 app.get('/api/projects/:id/', function (req, res, next) {  // get the project with given permalink
@@ -285,7 +287,7 @@ app.get('/api/projects/:id/', function (req, res, next) {  // get the project wi
         dbo.collection("projects").find({_id: req.params.id}).toArray(function (err, projects) {
             if (err) return res.status(500).end(err);
             let project = projects[0];
-            if (!project) return res.status(404).end("Project does not exist at: " + req.params.id);
+            if (!project) return res.status(204).end("Project does not exist at: " + req.params.id);
             db.close();
             return res.json(project);
         });
@@ -350,10 +352,9 @@ app.patch('/api/projects/', function (req, res, next) {
     });
 });
 
-app.delete('/api/projects/:user/', function (req, res, next) {  // user removes self as collaborator
-    let permalink = req.body.permalink;
-    let user = req.body.user;
-    if (user !== req.session.email) return res.status(403).end("forbidden: whitelisted users may only remove themselves");
+app.delete('/api/projects/:id/', function (req, res, next) {  // user removes self as collaborator
+    let permalink = req.params.id;
+    let user = req.session.email;
 
     MongoClient.connect(url, function (err, db) {
         if (err) return res.status(500).end(err);  // failed to connect to mongoDB
@@ -362,10 +363,20 @@ app.delete('/api/projects/:user/', function (req, res, next) {  // user removes 
         dbo.collection("projects").find({ _id: permalink }).toArray(function (err, projects) {
             if (err) return res.status(500).end(err);
             let project = projects[0];
-            if (!project) return res.status(409).end("No project exists at: " + permalink);
+            if (!project) return res.status(204).end("No project exists at: " + permalink);
 
-            db.close();
-            return res.json("removed " + user + " from project at " + permalink);
+            let updatedUsers = project.users;
+            if(project.users.indexOf(user) !== -1 && user !== null) {
+                updatedUsers = project.users.filter(item => item !== user)
+            }
+            let updated_project = { $set: { users: updatedUsers} };
+            dbo.collection("projects").updateOne({ _id: permalink }, updated_project, function (err, res2) {
+                if (err) return res2.status(500).end(err);
+
+                db.close();
+                return res.json("User " + user + " removed from " + permalink);
+            });
+
         });
     });
 });

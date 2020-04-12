@@ -256,12 +256,11 @@ class NavAppBar extends React.Component {
         .getCurrUser()
         .then(res => {
             try {
-                //console.log(res.data);
-                this.setState({current_user: res.data.firstName})
+                if (res.status === 200)
+                  this.setState({current_user: res.data.firstName})
           } catch {
             //console.log(res.data);
           }
-          //console.log(res.data[0].firstName);
         });
   }
   render(){
