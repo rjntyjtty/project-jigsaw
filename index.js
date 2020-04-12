@@ -197,11 +197,10 @@ app.get('/api/users/:id/', function (req, res, next) {  // get user with given e
 
 app.get('/api/current_user/', function (req, res, next) {  // get currently logged in user
     MongoClient.connect(DB_URI, function (err, db) {
-        // if (err) return res.status(500).end(err);  // failed to connect to mongoDB
         let dbo = db.db(DB_NAME);
 
         dbo.collection("users").find({ _id: req.session.email }).toArray(function (err, users) {
-            if (err) return console.log(err);res.status(500).end(err);
+            if (err) return res.status(500).end(err);
             let curr_user = users[0];
             if (!curr_user) return res.status(204).end("currently signed out");
 
@@ -235,7 +234,7 @@ app.post('/api/projects/', function (req, res, next) {  // save new project; ano
                 if (user === "") new_project = { _id: String(permalink), users: [], title: title, code: code, anons: [], bookmarks: [], public: false };
 
                 dbo.collection("projects").insertOne(new_project, function (err, res2) {
-                    if (err) return res2.status(500).end(err);
+                    if (err) return res.status(500).end(err);
                     db.close();
                     return res.json(new_project);
                 });
@@ -322,7 +321,7 @@ app.get('/api/projects/:id/user/', function (req, res, next) {  // get projects 
 // also thinking about refactoring so that we only pass in new users, and this function will append them to an existing list
 app.patch('/api/projects/', function (req, res, next) {
     let permalink = req.body.permalink;
-    let user = req.body.user || req.session.email;   // do we need to check if each user is actually a real account?
+    let user = req.body.user || req.session.email || "";   // do we need to check if each user is actually a real account?
     let code = req.body.code || "";
     let anons = req.body.anons || [];
     let bookmarks = req.body.bookmarks || [];
@@ -339,12 +338,12 @@ app.patch('/api/projects/', function (req, res, next) {
             if (!project) return res.status(409).end("No project exists at: " + permalink);
 
             let updatedUsers = project.users;
-            if(project.users.indexOf(user) === -1 && user !== null) {
+            if(project.users.indexOf(user) === -1 && user !== "") {
                 updatedUsers.push(user);
             }
             let updated_project = { $set: { users: updatedUsers, code: code } };
             dbo.collection("projects").updateOne({ _id: permalink }, updated_project, function (err, res2) {
-                if (err) return res2.status(500).end(err);
+                if (err) return res.status(500).end(err);
 
                 db.close();
                 return res.json("Project " + " at " + permalink + " updated");

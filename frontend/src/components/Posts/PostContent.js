@@ -62,6 +62,11 @@ class PostContent extends PureComponent {
     this.setState({ page });
   };
 
+  showPostAddBox = () => {
+    if (this.props.loggedIn)
+      return (<PostAddBox/>);
+  }
+
   printImageGrid = () => {
     const options = [];
     options.push({
@@ -102,10 +107,12 @@ class PostContent extends PureComponent {
         </Box>
       );
     }
+    let text = 'No projects added yet. Click on "Add Project" to create your first one.';
+    if (! this.props.loggedIn) text = 'Log in or sign up to store saved projects here!';
     return (
       <Box m={2}>
         <Typography>
-          No projects added yet. Click on &quot;Add Project&quot; to create your first one.
+          {text}
         </Typography>
       </Box>
     );
@@ -119,7 +126,7 @@ class PostContent extends PureComponent {
       <Paper>
         <Toolbar className={classes.toolbar}>
           <Typography variant="h6">Your Projects</Typography>
-          <PostAddBox />
+          {this.showPostAddBox()}
         </Toolbar>
         <Divider />
         {this.printImageGrid()}

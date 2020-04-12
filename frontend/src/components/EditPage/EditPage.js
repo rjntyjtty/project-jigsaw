@@ -27,6 +27,10 @@ class EditPage extends React.Component {
     this.handleSave();
   };
 
+  initCode = (code) => {
+    this.setState({ code: code });
+  }
+
   handleSave = () => {
     let permalink = window.location.href.split('/').slice(-1).pop();
 
@@ -46,7 +50,7 @@ class EditPage extends React.Component {
             <div className='edit-page'>
                 <NavAppBar name="Edit" isEdit="true" open={this.state.sideDrawerOpen} onOpen={this.openDrawer} newMessage={this.state.newMessage} handleSave={this.handleSave}/>
                 <main>
-                  <CodeEditor onCodeUpdate={this.onCodeUpdate}/>
+                  <CodeEditor onCodeUpdate={this.onCodeUpdate} initCode={this.initCode}/>
                   <ModelRenderer />
                 </main>
                 <SideDrawer open={this.state.sideDrawerOpen} onClose={this.closeDrawer} onNewMessage={this.onNewMessage} />

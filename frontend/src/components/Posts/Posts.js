@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from "react";
+import React, { Fragment } from "react";
 import PostContent from "./PostContent";
 import projectRequests from '../../requests/projectRequests'
 import userRequests from '../../requests/userRequests'
@@ -7,7 +7,8 @@ class Posts extends React.Component {
   constructor() {
     super();
     this.state = {
-      posts: []
+      posts: [],
+      loggedIn: false
     }
 
     userRequests
@@ -15,6 +16,7 @@ class Posts extends React.Component {
         .then(res => {
             try {
                 if (res.status === 200) {
+                  this.setState({loggedIn: true});
                   let currUser = res.data.firstName;
                   projectRequests
                       .getUserProjects(currUser)
@@ -34,7 +36,7 @@ class Posts extends React.Component {
     return (
       <Fragment>
         <PostContent
-            posts={this.state.posts}
+            posts={this.state.posts} loggedIn={this.state.loggedIn}
           />
       </Fragment>
     );

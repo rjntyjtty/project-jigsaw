@@ -50,6 +50,7 @@ class CodeEditor extends React.Component {
                 this.props.compileCode(res.data.code);
               } else {
                 this.setState({code: starterCode});
+                this.props.initCode(starterCode);
                 this.props.compileCode(starterCode);
               }
           } catch {}
