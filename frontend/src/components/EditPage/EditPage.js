@@ -5,10 +5,11 @@ import { connect } from 'react-redux';
 import SideDrawer from '../SideDrawer/SideDrawer';
 import NavAppBar from '../NavBar/NavAppBar';
 import projectRequests from '../../requests/projectRequests'
+import starterCode from './starterCode';
 require('./EditPage.css')
 
 class EditPage extends React.Component {
-  state = { sideDrawerOpen: false, newMessage: false, title: "", code: "" };
+  state = { sideDrawerOpen: false, newMessage: false, title: "", code: starterCode };
 
   closeDrawer = () => {
     this.setState({ sideDrawerOpen: false, newMessage: false });
@@ -24,7 +25,6 @@ class EditPage extends React.Component {
 
   onCodeUpdate = (code) => {
     this.setState({ code: code });
-    this.handleSave();
   };
 
   initCode = (code) => {
