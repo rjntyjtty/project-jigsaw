@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import SideDrawer from '../SideDrawer/SideDrawer';
 import NavAppBar from '../NavBar/NavAppBar';
 import projectRequests from '../../requests/projectRequests'
-import starterCode from './starterCode';
+import starterCode from '../CodeEditor/starterCode';
 require('./EditPage.css')
 
 class EditPage extends React.Component {
