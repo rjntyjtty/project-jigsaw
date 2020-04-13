@@ -69,7 +69,10 @@ class SideDrawer extends React.Component {
         .getCurrUser()
         .then(res => {
           try {
-            this.setState({current_user: res.data.firstName + " " + res.data.lastName});
+            if (res.data.firstName)
+              this.setState({current_user: res.data.firstName + " " + res.data.lastName});
+            else
+              this.setState({current_user: "Anonymous " + generateRandom()});
           } catch {
             this.setState({current_user: "Anonymous " + generateRandom()});
           }
