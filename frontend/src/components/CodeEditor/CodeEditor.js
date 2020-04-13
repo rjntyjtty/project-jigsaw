@@ -24,7 +24,7 @@ class CodeEditor extends React.Component {
             code: starterCode
         }
 
-        if(window.location.pathname !== '/edit' && window.location.pathname !== ''){
+        if (window.location.pathname !== '/edit' && window.location.pathname !== '') {
           socket.emit('join', window.location.pathname)
         }
 
@@ -58,11 +58,9 @@ class CodeEditor extends React.Component {
     }
 
     componentDidMount() {
-        if(window.location.pathname === '/edit'){
+        if (window.location.pathname === '/edit'){
           window.location.pathname = `/edit/${generateRandom().split(' ').join('')}`
         }
-
-        //this.props.compileCode(this.state.code);
     }
 
     onChange = (newValue) => {

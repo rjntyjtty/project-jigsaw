@@ -6,6 +6,8 @@ Website: https://project-jigsaw.herokuapp.com/
 
 API Docs: https://github.com/UTSCC09/project-jigsaw/wiki/API-Docs
 
+Video Link: https://youtu.be/G-Uy2t5sWKU
+
 ### Team members:
 - David (Sheng Wei) Cui - 1004267553 - cuisheng
 - Nicholas Wong - 1004207388 - wongni21
@@ -17,13 +19,14 @@ Project Jigsaw is a collaborative 3D model editing platform where users can work
 
 ### Key Features
 - Account signup/login
-- 3D model creation/storage
+- 3D model creation
 - 3D model editing
-- 3D model library
+- 3D model Playground
 - Sharing projects
 - Collaborative editing
-- Model rendering
-
+- Chat
+- Saving projects
+- Deleting projects
 
 ### Description of technology we use
 - React framework for frontend
@@ -33,38 +36,12 @@ Project Jigsaw is a collaborative 3D model editing platform where users can work
 - Babylon for 3D models
 - Docker and Heroku for deployment
 
-
 ### Top 5 technical challenges
 - Containerization and deployment
-- Appealing frontend UI that suits different file types
-- Permissions and security
 - 3D model rendering
+- Socket management
+- Collaborative 3D model editing
 - Learning React
 
 --------------------------------------------------------------------------------
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `yarn install`
-
-Installs the dependencies.
-Make sure to run this in both "/" and "/frontend"
-
-### `yarn start`
-
-Runs the app in the development mode.<br />
-Browser should open automatically.
-Make sure to run this in both "/" and "/client"
-
-### `yarn run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
