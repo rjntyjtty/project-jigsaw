@@ -197,7 +197,7 @@ class NavAppBar extends React.Component {
   }
 
   saveButton() {
-    if (this.props.isEdit === "true" && this.state.current_user !== "") {
+    if (this.props.isEdit === "true" && this.state.current_user) {
       return (
         <Tooltip title={<span style={{ fontSize: "20px" }}>Save</span>}>
           <IconButton
