@@ -2,9 +2,9 @@
 ## CSCC09 Project
 
 ### Project name: Jigsaw
-Website: https://project-jigsaw.herokuapp.com/
+Website: https://projectjigsaw.herokuapp.com/
 
-API Docs: https://github.com/UTSCC09/project-jigsaw/wiki/API-Docs
+API Docs: https://github.com/rjntyjtty/project-jigsaw/wiki/API-Docs
 
 Video Link: https://youtu.be/G-Uy2t5sWKU
 
